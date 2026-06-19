@@ -4,14 +4,17 @@ const User = require('../models/User');
 const protect = async (req, res, next) => {
   let token;
 
-  // Read token from Authorization header (Bearer <token>)
+  // Read token from Authorization header or query parameters
   if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+    token = req.headers.authorization.split(' ')[1];
+  } else if (req.query && req.query.token) {
+    token = req.query.token;
+  }
+
+  if (token) {
     try {
-      token = req.headers.authorization.split(' ')[1];
-      
       // Verify token
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
 
       // Get user from the token (exclude password)
       req.user = await User.findById(decoded.id).select('-password');
@@ -29,10 +32,8 @@ const protect = async (req, res, next) => {
     }
   }
 
-  if (!token) {
-    res.status(401);
-    return next(new Error('Not authorized, no token provided'));
-  }
+  res.status(401);
+  return next(new Error('Not authorized, no token provided'));
 };
 
 // Role check middleware (defaults to Teacher, but good to have)

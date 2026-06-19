@@ -76,7 +76,10 @@ const PaperBuilder = () => {
   };
 
   const handleDownloadPDF = () => {
-    window.open(`/api/papers/${id}/pdf`, '_blank');
+    const token = localStorage.getItem('token');
+    const baseUrl = import.meta.env.VITE_API_URL || '';
+    const cleanBase = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
+    window.open(`${cleanBase}/api/papers/${id}/pdf?token=${token}`, '_blank');
   };
 
   const moveQuestion = (index, direction) => {

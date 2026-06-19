@@ -41,7 +41,10 @@ const Dashboard = () => {
   }, []);
 
   const handleDownloadPDF = (paperId) => {
-    window.open(`/api/papers/${paperId}/pdf`, '_blank');
+    const token = localStorage.getItem('token');
+    const baseUrl = import.meta.env.VITE_API_URL || '';
+    const cleanBase = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
+    window.open(`${cleanBase}/api/papers/${paperId}/pdf?token=${token}`, '_blank');
   };
 
   if (loading) {

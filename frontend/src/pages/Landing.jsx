@@ -102,7 +102,7 @@ const Landing = () => {
       </header>
 
       {/* Hero Section */}
-      <section className="relative pt-20 pb-24 overflow-hidden border-b border-slate-50">
+      <section className="relative pt-10 pb-24 overflow-hidden border-b border-slate-50">
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 h-[400px] w-[600px] bg-indigo-600/5 rounded-full blur-3xl -z-10"></div>
         <div className="max-w-5xl mx-auto px-6 text-center space-y-6">
           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 text-[10px] font-bold tracking-wider uppercase">
