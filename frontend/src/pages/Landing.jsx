@@ -61,10 +61,10 @@ const Landing = () => {
     <div className="min-h-screen bg-white text-slate-800 antialiased font-sans">
       {/* Top Navbar Header */}
       <header className="border-b border-slate-100 bg-white/85 backdrop-blur-md sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <GraduationCap className="h-7 w-7 text-indigo-650" />
-            <span className="font-extrabold text-lg tracking-tight text-slate-900">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <GraduationCap className="h-6 w-6 sm:h-7 sm:w-7 text-indigo-650" />
+            <span className="font-extrabold text-base sm:text-lg tracking-tight text-slate-900">
               Question<span className="text-indigo-650">Wallah</span>
             </span>
           </div>
@@ -74,25 +74,26 @@ const Landing = () => {
             <a href="#faq" className="hover:text-indigo-650 transition-colors">FAQ</a>
           </nav>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1.5 sm:gap-3">
             {isAuthenticated ? (
               <button
                 onClick={() => navigate('/')}
-                className="px-4.5 py-2 bg-indigo-650 hover:bg-indigo-700 text-white font-bold rounded-xl text-xs flex items-center gap-1.5 shadow-sm transition-all"
+                className="px-3 sm:px-4.5 py-2 bg-indigo-650 hover:bg-indigo-700 text-white font-bold rounded-xl text-xs flex items-center gap-1.5 shadow-sm transition-all"
               >
-                Go to Dashboard
+                <span className="hidden sm:inline">Go to </span>Dashboard
                 <ArrowRight className="h-3.5 w-3.5" />
               </button>
             ) : (
               <>
-                <Link to="/login" className="px-4 py-2 text-xs font-bold text-slate-650 hover:text-slate-900 transition-colors">
+                <Link to="/login" className="px-2.5 sm:px-4 py-2 text-xs font-bold text-slate-650 hover:text-slate-900 transition-colors">
                   Sign In
                 </Link>
                 <Link
                   to="/register"
-                  className="px-4.5 py-2 bg-indigo-650 hover:bg-indigo-700 text-white font-bold rounded-xl text-xs shadow-sm transition-all"
+                  className="px-3 sm:px-4.5 py-2 bg-indigo-650 hover:bg-indigo-700 text-white font-bold rounded-xl text-xs shadow-sm transition-all"
                 >
-                  Get Started Free
+                  <span className="hidden sm:inline">Get Started Free</span>
+                  <span className="inline sm:hidden">Sign Up</span>
                 </Link>
               </>
             )}

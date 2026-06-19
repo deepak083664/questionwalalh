@@ -66,19 +66,22 @@ const Dashboard = () => {
       title: 'Total Generated Papers',
       value: stats?.totalPapers || 0,
       icon: FileText,
-      color: 'text-indigo-600 bg-indigo-50 border-indigo-100',
+      color: 'text-indigo-700 bg-white border border-indigo-200',
+      gradient: 'from-indigo-50 to-indigo-100/60 border-indigo-300/80 hover:border-indigo-400',
     },
     {
       title: 'Question Bank Count',
       value: stats?.savedQuestionsCount || 0,
       icon: Database,
-      color: 'text-violet-650 bg-violet-50 border-violet-100',
+      color: 'text-violet-750 bg-white border border-violet-200',
+      gradient: 'from-violet-50 to-violet-100/60 border-violet-300/80 hover:border-violet-400',
     },
     {
       title: 'Total AI Questions',
       value: stats?.totalQuestionsCount || 0,
       icon: BrainCircuit,
-      color: 'text-teal-600 bg-teal-50 border-teal-100',
+      color: 'text-teal-750 bg-white border border-teal-200',
+      gradient: 'from-teal-50 to-teal-100/60 border-teal-300/80 hover:border-teal-400',
     }
   ];
 
@@ -96,7 +99,7 @@ const Dashboard = () => {
         </div>
         <button
           onClick={() => navigate('/generate')}
-          className="px-4.5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-xs flex items-center gap-1.5 shadow-sm transition-all"
+          className="px-4.5 py-2.5 bg-gradient-to-r from-indigo-650 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white font-bold rounded-xl text-xs flex items-center gap-1.5 shadow-md shadow-indigo-600/10 hover:shadow-lg transition-all"
         >
           Generate Paper
           <ArrowRight className="h-3.5 w-3.5" />
@@ -110,7 +113,7 @@ const Dashboard = () => {
           return (
             <div
               key={index}
-              className="bg-white p-6 rounded-2xl border border-slate-200/50 shadow-premium hover:shadow-card hover:translate-y-[-1px] transition-all-custom flex items-center justify-between"
+              className={`bg-gradient-to-br ${card.gradient} p-6 rounded-2xl border border-slate-200/70 shadow-premium hover:shadow-[0_12px_24px_-4px_rgba(99,102,241,0.06)] hover:translate-y-[-2px] transition-all-custom flex items-center justify-between`}
             >
               <div className="space-y-1">
                 <span className="text-[10px] font-bold uppercase tracking-wider text-slate-450">{card.title}</span>
@@ -133,7 +136,7 @@ const Dashboard = () => {
             {/* AI Generator Panel */}
             <Link
               to="/generate"
-              className="group bg-white p-5 rounded-2xl border border-slate-200/50 shadow-premium hover:border-indigo-300 hover:shadow-card transition-all duration-200"
+              className="group bg-gradient-to-br from-white via-white to-indigo-50/10 p-5 rounded-2xl border border-slate-200/50 shadow-premium hover:border-indigo-300 hover:shadow-[0_12px_24px_-4px_rgba(99,102,241,0.06)] hover:-translate-y-0.5 transition-all duration-200"
             >
               <div className="flex gap-4 items-start">
                 <div className="h-9 w-9 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center flex-shrink-0 group-hover:bg-indigo-600 group-hover:text-white transition-all">
@@ -154,7 +157,7 @@ const Dashboard = () => {
             {/* OCR Panel */}
             <Link
               to="/ocr-import"
-              className="group bg-white p-5 rounded-2xl border border-slate-200/50 shadow-premium hover:border-violet-300 hover:shadow-card transition-all duration-200"
+              className="group bg-gradient-to-br from-white via-white to-violet-50/10 p-5 rounded-2xl border border-slate-200/50 shadow-premium hover:border-violet-300 hover:shadow-[0_12px_24px_-4px_rgba(139,92,246,0.06)] hover:-translate-y-0.5 transition-all duration-200"
             >
               <div className="flex gap-4 items-start">
                 <div className="h-9 w-9 rounded-lg bg-violet-50 text-violet-650 flex items-center justify-center flex-shrink-0 group-hover:bg-violet-600 group-hover:text-white transition-all">
@@ -177,7 +180,7 @@ const Dashboard = () => {
         {/* AI Quota Card (SaaS Detail) */}
         <div className="space-y-6">
           <h2 className="text-sm font-bold uppercase tracking-wider text-slate-400">Subscription & Quota</h2>
-          <div className="bg-white border border-slate-200/50 p-6 rounded-2xl shadow-premium space-y-4">
+          <div className="premium-card p-6 space-y-4">
             <div className="flex items-center gap-3">
               <div className="h-9 w-9 rounded-lg bg-teal-50 text-teal-650 flex items-center justify-center border border-teal-100">
                 <Cpu className="h-5 w-5" />
@@ -230,11 +233,11 @@ const Dashboard = () => {
             </p>
           </div>
         ) : (
-          <div className="bg-white rounded-2xl border border-slate-200/50 shadow-premium overflow-hidden">
+          <div className="premium-card overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="bg-slate-50/80 text-slate-400 text-[10px] font-bold uppercase tracking-wider border-b border-slate-150">
+                  <tr className="bg-slate-800 text-slate-100 text-[10px] font-extrabold uppercase tracking-wider border-b border-slate-700">
                     <th className="py-3 px-6">Paper details</th>
                     <th className="py-3 px-6">Subject</th>
                     <th className="py-3 px-6">Class</th>
@@ -243,9 +246,9 @@ const Dashboard = () => {
                     <th className="py-3 px-6 text-right">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100">
+                <tbody className="divide-y divide-slate-200 bg-white">
                   {recentPapers.map((paper) => (
-                    <tr key={paper._id} className="hover:bg-slate-50/40 transition-all font-medium text-xs text-slate-600">
+                    <tr key={paper._id} className="hover:bg-indigo-50/40 transition-all font-semibold text-xs text-slate-700">
                       <td className="py-4 px-6">
                         <div className="flex flex-col">
                           <span className="font-bold text-slate-800 truncate max-w-xs">{paper.title}</span>

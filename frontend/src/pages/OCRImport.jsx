@@ -202,7 +202,7 @@ const OCRImport = () => {
 
       {/* Progress display */}
       {progressStatus !== '' && (
-        <div className="bg-white border border-slate-200/60 rounded-2xl p-12 text-center max-w-lg mx-auto flex flex-col items-center justify-center min-h-[300px] shadow-premium">
+        <div className="premium-card p-12 text-center max-w-lg mx-auto flex flex-col items-center justify-center min-h-[300px]">
           <div className="h-12 w-12 relative flex items-center justify-center mb-6">
             <div className="absolute inset-0 rounded-full border-2 border-indigo-650/20 border-t-transparent animate-spin"></div>
             <ScanLine className="h-6 w-6 text-indigo-650 animate-pulse" />
@@ -296,7 +296,7 @@ const OCRImport = () => {
 
           {/* Right Raw text details logs */}
           <div>
-            <div className="bg-white border border-slate-200/50 rounded-2xl p-5 shadow-premium space-y-4">
+            <div className="premium-card p-5 space-y-4">
               <button
                 onClick={() => setShowRawText(!showRawText)}
                 className="w-full flex items-center justify-between text-xs font-bold text-slate-800 pb-2 border-b border-slate-100"

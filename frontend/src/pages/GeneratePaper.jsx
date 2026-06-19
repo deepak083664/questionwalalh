@@ -179,7 +179,7 @@ const GeneratePaper = () => {
       )}
 
       {loading && step === 1 && (
-        <div className="bg-white border border-slate-200/60 rounded-2xl p-12 text-center flex flex-col items-center justify-center min-h-[400px] shadow-premium">
+        <div className="premium-card p-12 text-center flex flex-col items-center justify-center min-h-[400px]">
           <div className="h-12 w-12 relative flex items-center justify-center mb-6">
             <div className="absolute inset-0 rounded-full border-2 border-indigo-600 border-t-transparent animate-spin"></div>
             <BrainCircuit className="h-6 w-6 text-indigo-650 animate-pulse" />
@@ -194,7 +194,7 @@ const GeneratePaper = () => {
       {/* STEP 1: PARAMETERS FORM */}
       {!loading && step === 1 && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <form onSubmit={handleGenerate} className="lg:col-span-2 bg-white rounded-2xl border border-slate-200/50 shadow-premium p-8 space-y-6">
+          <form onSubmit={handleGenerate} className="lg:col-span-2 premium-card p-8 space-y-6">
             <div className="flex items-center gap-3 pb-5 border-b border-slate-100">
               <div className="h-9 w-9 bg-indigo-50 text-indigo-650 rounded-lg flex items-center justify-center border border-indigo-100">
                 <Settings className="h-4.5 w-4.5" />
@@ -345,7 +345,7 @@ const GeneratePaper = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Questions list */}
           <div className="lg:col-span-2 space-y-4">
-            <div className="bg-white rounded-2xl border border-slate-200/50 p-5 flex justify-between items-center shadow-premium">
+            <div className="premium-card p-5 flex justify-between items-center">
               <div>
                 <h3 className="font-bold text-slate-800 text-sm">Review Questions</h3>
                 <p className="text-[10px] text-slate-400 mt-0.5 font-semibold">
@@ -404,7 +404,7 @@ const GeneratePaper = () => {
 
           {/* Right layout metadata */}
           <div className="space-y-6">
-            <div className="bg-white border border-slate-200/50 rounded-2xl shadow-premium p-6 space-y-5 sticky top-20">
+            <div className="premium-card p-6 space-y-5 sticky top-20">
               <h3 className="font-extrabold text-slate-900 text-sm flex items-center gap-2 pb-3.5 border-b border-slate-100">
                 <School className="h-4.5 w-4.5 text-indigo-650" />
                 Exam details

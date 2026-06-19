@@ -48,7 +48,7 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50/50 px-4 py-16 font-sans">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-indigo-100/40 via-slate-50 to-violet-100/40 px-4 py-16 font-sans bg-grid-pattern">
       <div className="w-full max-w-[380px] space-y-6">
         {/* Brand Header */}
         <div className="flex flex-col items-center text-center">

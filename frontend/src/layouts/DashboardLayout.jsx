@@ -42,12 +42,12 @@ const DashboardLayout = ({ children }) => {
   };
 
   const SidebarContent = () => (
-    <div className="flex flex-col h-full bg-white border-r border-slate-200/60 text-slate-700">
+    <div className="flex flex-col h-full bg-slate-900 border-r border-slate-800 text-slate-300">
       {/* Brand Logo Header */}
-      <div className="flex items-center gap-2 px-6 py-5 border-b border-slate-100">
-        <GraduationCap className="h-7 w-7 text-primary-600" />
-        <span className="font-extrabold text-base tracking-tight text-slate-900">
-          Question<span className="text-primary-600">Wallah</span>
+      <div className="flex items-center gap-2 px-6 py-5 border-b border-slate-800">
+        <GraduationCap className="h-7 w-7 text-indigo-400" />
+        <span className="font-extrabold text-base tracking-tight text-white">
+          Question<span className="text-indigo-400">Wallah</span>
         </span>
       </div>
 
@@ -63,11 +63,11 @@ const DashboardLayout = ({ children }) => {
               onClick={() => setMobileOpen(false)}
               className={`flex items-center gap-3 px-3.5 py-2.5 text-xs font-bold rounded-xl transition-all duration-150 ${
                 active
-                  ? 'bg-primary-50 text-primary-700'
-                  : 'hover:bg-slate-50 text-slate-550 hover:text-slate-900'
+                  ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/15'
+                  : 'hover:bg-slate-800/60 text-slate-400 hover:text-slate-100'
               }`}
             >
-              <Icon className={`h-4.5 w-4.5 ${active ? 'text-primary-600' : 'text-slate-400'}`} />
+              <Icon className={`h-4.5 w-4.5 ${active ? 'text-white' : 'text-slate-500'}`} />
               {item.name}
             </Link>
           );
@@ -75,22 +75,22 @@ const DashboardLayout = ({ children }) => {
       </nav>
 
       {/* Teacher Profile Footer Info */}
-      <div className="p-4 border-t border-slate-100">
-        <div className="flex items-center gap-3 px-3 py-2 bg-slate-50 rounded-xl">
-          <div className="flex items-center justify-center h-8 w-8 rounded-full bg-primary-100 text-primary-750 font-bold text-xs">
+      <div className="p-4 border-t border-slate-800">
+        <div className="flex items-center gap-3 px-3 py-2 bg-slate-800/40 border border-slate-800/80 rounded-xl">
+          <div className="flex items-center justify-center h-8 w-8 rounded-full bg-indigo-500/20 text-indigo-300 font-bold text-xs">
             {user?.name?.[0] || 'T'}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-xs font-bold text-slate-800 truncate">
+            <p className="text-xs font-bold text-slate-200 truncate">
               {user?.name || 'Teacher User'}
             </p>
-            <p className="text-[10px] text-slate-450 truncate">{user?.email}</p>
+            <p className="text-[10px] text-slate-500 truncate">{user?.email}</p>
           </div>
         </div>
 
         <button
           onClick={handleLogout}
-          className="flex items-center gap-2.5 w-full mt-2 px-3 py-2 text-xs font-bold text-slate-450 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all"
+          className="flex items-center gap-2.5 w-full mt-2 px-3 py-2 text-xs font-bold text-slate-500 hover:text-red-400 hover:bg-red-950/20 rounded-xl transition-all"
         >
           <LogOut className="h-4 w-4" />
           Log Out
@@ -100,7 +100,7 @@ const DashboardLayout = ({ children }) => {
   );
 
   return (
-    <div className="min-h-screen bg-slate-50/50 flex">
+    <div className="min-h-screen bg-[#f8fafc] flex bg-grid-pattern">
       {/* Desktop Sidebar (Permanent) */}
       <div className="hidden lg:block w-64 flex-shrink-0">
         <SidebarContent />
@@ -111,14 +111,14 @@ const DashboardLayout = ({ children }) => {
         <div className="fixed inset-0 z-50 flex lg:hidden">
           {/* Overlay mask */}
           <div
-            className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm"
+            className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm"
             onClick={() => setMobileOpen(false)}
           ></div>
           {/* Sliding container */}
-          <div className="relative flex flex-col w-64 max-w-xs h-full bg-white animate-slide-in">
+          <div className="relative flex flex-col w-64 max-w-xs h-full bg-slate-900 animate-slide-in">
             <button
               onClick={() => setMobileOpen(false)}
-              className="absolute top-4 right-4 h-8 w-8 flex items-center justify-center text-slate-500 hover:bg-slate-100 rounded-full"
+              className="absolute top-4 right-4 h-8 w-8 flex items-center justify-center text-slate-400 hover:bg-slate-850 rounded-full"
             >
               <X className="h-5 w-5" />
             </button>
@@ -128,24 +128,24 @@ const DashboardLayout = ({ children }) => {
       )}
 
       {/* Main View Wrapper */}
-      <div className="flex-1 flex flex-col min-w-0 overflow-y-auto">
+      <div className="flex-1 flex flex-col min-w-0 overflow-y-auto bg-[#f1f5f9]">
         {/* Top Navbar */}
-        <header className="h-16 flex items-center justify-between px-6 bg-white border-b border-slate-200/60 sticky top-0 z-40">
-          <div className="flex items-center gap-4">
+        <header className="h-12 flex items-center justify-between px-6 bg-slate-900 border-b border-slate-800 sticky top-0 z-40 shadow-md">
+          <div className="flex items-center gap-3">
             <button
               onClick={() => setMobileOpen(true)}
-              className="lg:hidden h-10 w-10 flex items-center justify-center text-slate-500 hover:bg-slate-50 rounded-xl"
+              className="lg:hidden h-8 w-8 flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-all"
             >
-              <Menu className="h-6 w-6" />
+              <Menu className="h-5 w-5" />
             </button>
-            <h1 className="text-base font-extrabold text-slate-900 capitalize">
+            <h1 className="text-sm font-extrabold text-slate-100 capitalize">
               {navItems.find((n) => isActive(n.path))?.name || 'Question Paper Builder'}
             </h1>
           </div>
 
           <div className="flex items-center gap-3">
             {/* Action Item details */}
-            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 bg-slate-100 px-2.5 py-1 rounded-md">
+            <span className="text-[9px] font-bold uppercase tracking-wider text-indigo-300 bg-indigo-950/80 border border-indigo-800/60 px-2 py-0.5 rounded-md">
               Teacher Mode
             </span>
           </div>
