@@ -106,10 +106,25 @@ app.use('/api/bank', bankRoutes);
 app.use('/api/uploads', uploadRoutes);
 app.use('/api/papers', paperRoutes);
 
-// Base Route
-app.get('/', (req, res) => {
-  res.json({ message: 'Welcome to the Question Wallah API!' });
-});
+// Serve frontend static files in production
+const frontendDistPath = path.join(__dirname, '../../frontend/dist');
+if (process.env.NODE_ENV === 'production' && fs.existsSync(frontendDistPath)) {
+  console.log('Serving frontend static files from:', frontendDistPath);
+  app.use(express.static(frontendDistPath));
+  
+  // SPA routing fallback (route all non-API paths to index.html)
+  app.get('*', (req, res, next) => {
+    if (req.originalUrl.startsWith('/api') || req.originalUrl.startsWith('/uploads')) {
+      return next();
+    }
+    res.sendFile(path.join(frontendDistPath, 'index.html'));
+  });
+} else {
+  // Base Route (development / API only mode)
+  app.get('/', (req, res) => {
+    res.json({ message: 'Welcome to the Question Wallah API!' });
+  });
+}
 
 // Error Handling Middleware
 app.use(notFound);
