@@ -130,7 +130,7 @@ const DashboardLayout = ({ children }) => {
       {/* Main View Wrapper */}
       <div className="flex-1 flex flex-col min-w-0 overflow-y-auto bg-[#f1f5f9]">
         {/* Top Navbar */}
-        <header className="h-12 flex items-center justify-between px-6 bg-slate-900 border-b border-slate-800 sticky top-0 z-40 shadow-md">
+        <header className="h-12 flex items-center justify-between px-6 bg-slate-900 border-b border-slate-800 sticky top-0 z-40 shadow-[0_4px_12px_rgba(0,0,0,0.15)]">
           <div className="flex items-center gap-3">
             <button
               onClick={() => setMobileOpen(true)}

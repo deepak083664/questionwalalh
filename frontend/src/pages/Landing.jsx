@@ -60,7 +60,7 @@ const Landing = () => {
   return (
     <div className="min-h-screen bg-white text-slate-800 antialiased font-sans">
       {/* Top Navbar Header */}
-      <header className="border-b border-slate-100 bg-white/85 backdrop-blur-md sticky top-0 z-50">
+      <header className="border-b border-slate-100 bg-white/85 backdrop-blur-md sticky top-0 z-50 shadow-[0_2px_10px_rgba(0,0,0,0.05)]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-1.5 sm:gap-2">
             <GraduationCap className="h-6 w-6 sm:h-7 sm:w-7 text-indigo-650" />
