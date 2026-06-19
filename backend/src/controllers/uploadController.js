@@ -4,6 +4,7 @@ const Upload = require('../models/Upload');
 const Question = require('../models/Question');
 const History = require('../models/History');
 const fs = require('fs');
+const cloudinary = require('../config/cloudinary');
 
 /**
  * @desc    Upload document, perform OCR, and generate similar questions via Gemini AI
@@ -38,11 +39,21 @@ const uploadAndOCR = async (req, res, next) => {
     
     // Update text in upload record
     uploadRecord.extractedText = extractedText;
+    
+    // 2. Upload file to Cloudinary
+    console.log(`Uploading scanned file to Cloudinary...`);
+    const cloudinaryResult = await cloudinary.uploader.upload(filePath, {
+      folder: 'question-wallah',
+      resource_type: 'auto',
+    });
+    
+    // Save Cloudinary secure url as filePath
+    uploadRecord.filePath = cloudinaryResult.secure_url;
     await uploadRecord.save();
 
-    console.log(`OCR complete. Triggering Gemini analysis to generate similar questions...`);
+    console.log(`OCR & Cloudinary upload complete. Triggering Gemini analysis to generate similar questions...`);
 
-    // 2. Generate similar questions
+    // 3. Generate similar questions
     const aiLanguage = language.includes('hin') ? 'Hindi' : 'English';
     const similarQuestions = await generateSimilarQuestions(extractedText, aiLanguage);
 

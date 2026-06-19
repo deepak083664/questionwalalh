@@ -1,9 +1,13 @@
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const os = require('os');
 
-// Ensure uploads directory exists
-const uploadDir = path.join(__dirname, '../../uploads');
+// Use OS temp directory in production/serverless setups, otherwise local uploads folder
+const uploadDir = process.env.NODE_ENV === 'production' 
+  ? os.tmpdir() 
+  : path.join(__dirname, '../../uploads');
+
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
 }
