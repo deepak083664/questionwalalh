@@ -55,6 +55,9 @@ connectDB();
 
 const app = express();
 
+// Trust proxy for hosting behind load balancers/reverse proxies (e.g. Render, Heroku)
+app.set('trust proxy', 1);
+
 // Security Middleware
 app.use(helmet());
 app.use(xss());
