@@ -13,7 +13,8 @@ import {
   Plus,
   Trash2,
   FileCheck,
-  Check
+  Check,
+  Edit2
 } from 'lucide-react';
 
 const GeneratePaper = () => {
@@ -49,6 +50,15 @@ const GeneratePaper = () => {
 
   const [generatedQuestions, setGeneratedQuestions] = useState([]);
   const [selectedQuestionIds, setSelectedQuestionIds] = useState([]);
+  
+  // Edit Question States
+  const [editingId, setEditingId] = useState(null);
+  const [editFormData, setEditFormData] = useState({
+    text: '',
+    marks: 1,
+    options: [],
+    answer: ''
+  });
 
   // Handles input fields changes
   const handleParamChange = (e) => {
@@ -115,6 +125,48 @@ const GeneratePaper = () => {
     } else {
       setSelectedQuestionIds([...selectedQuestionIds, qId]);
     }
+  };
+
+  // Edit / Delete Question Handlers
+  const handleStartEdit = (q) => {
+    setEditingId(q._id);
+    setEditFormData({
+      text: q.text,
+      marks: q.marks,
+      options: q.options ? [...q.options] : [],
+      answer: q.answer || ''
+    });
+  };
+
+  const handleSaveEdit = (qId) => {
+    setGeneratedQuestions(prev => prev.map(q => {
+      if (q._id === qId) {
+        return {
+          ...q,
+          text: editFormData.text,
+          marks: Number(editFormData.marks),
+          options: q.type === 'MCQ' ? editFormData.options : undefined,
+          answer: editFormData.answer
+        };
+      }
+      return q;
+    }));
+    setEditingId(null);
+  };
+
+  const handleCancelEdit = () => {
+    setEditingId(null);
+  };
+
+  const handleDeleteQuestion = (qId) => {
+    setGeneratedQuestions(prev => prev.filter(q => q._id !== qId));
+    setSelectedQuestionIds(prev => prev.filter(id => id !== qId));
+  };
+
+  const handleOptionChange = (optIdx, val) => {
+    const updatedOptions = [...editFormData.options];
+    updatedOptions[optIdx] = val;
+    setEditFormData({ ...editFormData, options: updatedOptions });
   };
 
   // Step 2: Finalize details and create QuestionPaper
@@ -359,44 +411,148 @@ const GeneratePaper = () => {
 
             {generatedQuestions.map((q, idx) => {
               const active = selectedQuestionIds.includes(q._id);
+              const isEditing = editingId === q._id;
               return (
                 <div
                   key={q._id}
-                  onClick={() => toggleSelectQuestion(q._id)}
-                  className={`p-5 rounded-2xl border cursor-pointer flex gap-4 transition-all duration-200 ${
-                    active
-                      ? 'bg-indigo-50/70 border-indigo-400 shadow-sm'
-                      : 'bg-white/70 border-slate-200/60 hover:border-slate-350 shadow-sm'
+                  onClick={() => {
+                    if (!isEditing) {
+                      toggleSelectQuestion(q._id);
+                    }
+                  }}
+                  className={`p-5 rounded-2xl border flex gap-4 transition-all duration-200 ${
+                    isEditing
+                      ? 'bg-slate-50 border-indigo-500 shadow-lg cursor-default'
+                      : active
+                      ? 'bg-indigo-50/70 border-indigo-400 shadow-sm cursor-pointer'
+                      : 'bg-white/70 border-slate-200/60 hover:border-slate-350 shadow-sm cursor-pointer'
                   } clay-card`}
                 >
-                  <div className={`mt-0.5 h-4.5 w-4.5 rounded-lg border flex items-center justify-center flex-shrink-0 transition-all ${
-                    active ? 'bg-indigo-600 border-indigo-600 text-white shadow-sm' : 'bg-slate-100 border-slate-300'
-                  }`} style={{ boxShadow: active ? 'inset 1px 1px 2px rgba(255,255,255,0.45)' : 'inset 1px 1px 2px rgba(0,0,0,0.05)' }}>
-                    {active && <Check className="h-3.5 w-3.5" />}
-                  </div>
-
-                  <div className="flex-1 space-y-2">
-                    <div className="flex items-center justify-between text-[9px] font-bold text-slate-400 uppercase tracking-wider">
-                      <span>Question {idx + 1} • {q.type}</span>
-                      <span className="bg-white/85 border border-slate-250 px-2.5 py-0.5 rounded-lg text-slate-650 font-bold clay-badge">{q.marks} Marks</span>
+                  {!isEditing && (
+                    <div className={`mt-0.5 h-4.5 w-4.5 rounded-lg border flex items-center justify-center flex-shrink-0 transition-all ${
+                      active ? 'bg-indigo-600 border-indigo-600 text-white shadow-sm' : 'bg-slate-100 border-slate-300'
+                    }`} style={{ boxShadow: active ? 'inset 1px 1px 2px rgba(255,255,255,0.45)' : 'inset 1px 1px 2px rgba(0,0,0,0.05)' }}>
+                      {active && <Check className="h-3.5 w-3.5" />}
                     </div>
-                    <p className="text-xs font-semibold text-slate-900 leading-relaxed">{q.text}</p>
-                    
-                    {q.type === 'MCQ' && q.options && q.options.length > 0 && (
-                       <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-2">
-                         {q.options.map((opt, oIdx) => (
-                           <div key={oIdx} className="bg-slate-100/50 border border-slate-200/50 p-2 text-[10px] rounded-lg text-slate-500 font-semibold truncate shadow-inner">
-                             {opt}
-                           </div>
-                         ))}
-                       </div>
-                    )}
+                  )}
 
-                    <div className="bg-white/80 border border-indigo-100 text-indigo-750 p-3 rounded-2xl text-[10px] font-semibold leading-relaxed mt-3 shadow-inner">
-                      <span className="font-extrabold uppercase tracking-wider block text-indigo-500 text-[8px] mb-1">Answer / Scheme:</span>
-                      {q.answer}
+                  {isEditing ? (
+                    <div className="flex-1 space-y-3" onClick={(e) => e.stopPropagation()}>
+                      <div className="flex items-center justify-between text-[9px] font-bold text-slate-400 uppercase tracking-wider">
+                        <span>Editing Question {idx + 1} • {q.type}</span>
+                        <div className="flex items-center gap-2">
+                          <label className="text-[10px] font-bold text-slate-500">Marks:</label>
+                          <input
+                            type="number"
+                            value={editFormData.marks}
+                            onChange={(e) => setEditFormData({ ...editFormData, marks: Number(e.target.value) })}
+                            className="w-16 px-2 py-1 bg-white border border-slate-200 rounded-lg text-xs font-bold outline-none focus:border-indigo-600"
+                            min="1"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="space-y-1">
+                        <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-450">Question Text</label>
+                        <textarea
+                          value={editFormData.text}
+                          onChange={(e) => setEditFormData({ ...editFormData, text: e.target.value })}
+                          className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-indigo-650 min-h-[60px]"
+                          placeholder="Enter question text..."
+                        />
+                      </div>
+
+                      {q.type === 'MCQ' && editFormData.options && (
+                        <div className="space-y-1.5">
+                          <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-450">Options</label>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                            {editFormData.options.map((opt, oIdx) => (
+                              <div key={oIdx} className="flex items-center gap-1.5">
+                                <span className="text-[10px] font-bold text-slate-450">{String.fromCharCode(65 + oIdx)}.</span>
+                                <input
+                                  type="text"
+                                  value={opt}
+                                  onChange={(e) => handleOptionChange(oIdx, e.target.value)}
+                                  className="flex-1 px-3 py-1 bg-white border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-indigo-650"
+                                  placeholder={`Option ${oIdx + 1}`}
+                                />
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      <div className="space-y-1">
+                        <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-450">Answer / Marking Scheme</label>
+                        <textarea
+                          value={editFormData.answer}
+                          onChange={(e) => setEditFormData({ ...editFormData, answer: e.target.value })}
+                          className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-indigo-650 min-h-[50px]"
+                          placeholder="Enter answer..."
+                        />
+                      </div>
+
+                      <div className="flex justify-end gap-2 pt-2 border-t border-slate-100">
+                        <button
+                          type="button"
+                          onClick={handleCancelEdit}
+                          className="px-3 py-1.5 text-slate-700 font-bold rounded-xl text-[10px] clay-btn clay-btn-flat"
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleSaveEdit(q._id)}
+                          className="px-3 py-1.5 text-white font-bold rounded-xl text-[10px] clay-btn clay-btn-indigo"
+                        >
+                          Save
+                        </button>
+                      </div>
                     </div>
-                  </div>
+                  ) : (
+                    <div className="flex-1 space-y-2">
+                      <div className="flex items-center justify-between text-[9px] font-bold text-slate-450 uppercase tracking-wider">
+                        <span>Question {idx + 1} • {q.type}</span>
+                        <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
+                          <span className="bg-white/85 border border-slate-250 px-2.5 py-0.5 rounded-lg text-slate-650 font-bold clay-badge">{q.marks} Marks</span>
+                          <button
+                            type="button"
+                            onClick={() => handleStartEdit(q)}
+                            className="p-1 text-slate-450 hover:text-indigo-600 transition-colors"
+                            title="Edit Question"
+                          >
+                            <Edit2 className="h-3.5 w-3.5" />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleDeleteQuestion(q._id)}
+                            className="p-1 text-slate-450 hover:text-red-500 transition-colors"
+                            title="Delete Question"
+                          >
+                            <Trash2 className="h-3.5 w-3.5" />
+                          </button>
+                        </div>
+                      </div>
+                      <p className="text-xs font-semibold text-slate-900 leading-relaxed">{q.text}</p>
+                      
+                      {q.type === 'MCQ' && q.options && q.options.length > 0 && (
+                         <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-2">
+                           {q.options.map((opt, oIdx) => (
+                             <div key={oIdx} className="bg-slate-100/50 border border-slate-200/50 p-2 text-[10px] rounded-lg text-slate-500 font-semibold truncate shadow-inner">
+                               {opt}
+                             </div>
+                           ))}
+                         </div>
+                      )}
+
+                      {q.answer && (
+                        <div className="bg-white/80 border border-indigo-100 text-indigo-750 p-3 rounded-2xl text-[10px] font-semibold leading-relaxed mt-3 shadow-inner">
+                          <span className="font-extrabold uppercase tracking-wider block text-indigo-500 text-[8px] mb-1">Answer / Scheme:</span>
+                          {q.answer}
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
               );
             })}
