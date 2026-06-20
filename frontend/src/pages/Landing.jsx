@@ -113,7 +113,7 @@ const Landing = () => {
       </header>
 
       {/* Hero Section */}
-      <section className="relative pt-16 pb-20 overflow-hidden border-b border-indigo-100/50 dark:border-slate-800 bg-grid-pattern min-h-[420px] flex items-center justify-center">
+      <section className="relative pt-32 pb-8 sm:pb-12 overflow-hidden border-b border-slate-800 bg-grid-pattern min-h-[500px] flex items-end justify-center">
         {/* Full-width Banner Image Background */}
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-[0.97] transition-all duration-300 scale-102"
@@ -122,7 +122,7 @@ const Landing = () => {
           }}
         ></div>
         {/* Gradient Tint Overlay to ensure text readability in both Light and Dark modes */}
-        <div className="absolute inset-0 bg-gradient-to-b from-white/30 via-white/10 to-white/30 dark:from-slate-950/50 dark:via-slate-950/30 dark:to-slate-950/55 mix-blend-normal"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-slate-950/20 to-slate-950/80 mix-blend-normal"></div>
 
         {/* Floating background decorative clay circles and aurora glows */}
         <div className="absolute top-12 left-10 h-24 w-24 bg-purple-400/20 dark:bg-purple-500/10 rounded-full blur-xl clay-floating -z-10"></div>
@@ -130,34 +130,26 @@ const Landing = () => {
         <div className="absolute top-1/4 left-1/4 w-80 h-80 rounded-full bg-indigo-400/15 dark:bg-indigo-500/5 aurora-blur animate-pulse -z-20"></div>
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full bg-cyan-400/15 dark:bg-cyan-500/5 aurora-blur animate-pulse [animation-delay:3s] -z-20"></div>
 
-        {/* Centered Hero Content over the Banner */}
-        <div className="relative z-10 space-y-6 max-w-2xl mx-auto px-6 text-center flex flex-col items-center clay-animate-fade">
-          <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-indigo-50/90 dark:bg-indigo-950/90 border border-indigo-150/50 text-indigo-700 dark:text-indigo-300 text-[10px] font-extrabold tracking-wider uppercase shadow-sm clay-badge">
-            <Zap className="h-3.5 w-3.5 text-indigo-500 animate-pulse" /> Modern Assessment Engine
-          </span>
-          
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight leading-[1.25] text-transparent bg-clip-text bg-gradient-to-r from-slate-950 via-indigo-950 to-purple-950 dark:from-white dark:via-slate-100 dark:to-indigo-200">
-            Create professional question papers <br className="hidden sm:inline" /> in seconds with <br />
-            <span className="text-3d-glowing whitespace-nowrap block sm:inline-block mt-2 sm:mt-1 font-black">
+        {/* Hero Content aligned at the bottom over the Banner */}
+        <div className="relative z-10 space-y-4 max-w-2xl mx-auto px-6 text-center flex flex-col items-center clay-animate-fade w-full">
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight leading-[1.3] text-white">
+            Create professional question papers in seconds with <br className="hidden sm:inline" />
+            <span className="text-3d-glowing whitespace-nowrap inline-block mt-2 sm:mt-1 font-black">
               Question Wallah AI
             </span>
           </h1>
 
-          <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-350 max-w-md mx-auto leading-relaxed font-bold">
-            Designed for teachers and schools. Generate questions and scan worksheets instantly.
-          </p>
-
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
+          <div className="flex flex-row items-center justify-center gap-3 sm:gap-4 pt-2 w-full">
             <button
               onClick={() => navigate(isAuthenticated ? '/dashboard' : '/register')}
-              className="w-auto px-6 py-3 clay-btn clay-btn-indigo text-xs active:scale-95 transition-all shadow-lg flex items-center justify-center gap-2"
+              className="px-4 py-2.5 sm:px-6 sm:py-3 clay-btn clay-btn-indigo text-[10px] sm:text-xs active:scale-95 transition-all shadow-lg flex items-center justify-center gap-1.5"
             >
               Start Generating Free
-              <ArrowRight className="h-4 w-4" />
+              <ArrowRight className="h-3.5 w-3.5" />
             </button>
             <a
               href="#features"
-              className="w-auto px-6 py-3 clay-btn clay-btn-flat text-xs active:scale-95 transition-all shadow-md flex items-center justify-center"
+              className="px-4 py-2.5 sm:px-6 sm:py-3 clay-btn clay-btn-flat text-[10px] sm:text-xs active:scale-95 transition-all shadow-md flex items-center justify-center"
             >
               Explore Features
             </a>
