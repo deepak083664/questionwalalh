@@ -362,7 +362,7 @@ const PaperBuilder = () => {
 
         {/* Right Preview */}
         <div>
-          <div className="bg-slate-100/50 border border-slate-250 rounded-2xl p-5 shadow-sm space-y-4 sticky top-20">
+          <div className="bg-slate-100/50 border border-slate-250 rounded-2xl p-5 shadow-sm space-y-4 sticky top-20 gpu-accelerated">
             <h3 className="font-extrabold text-slate-800 text-xs uppercase tracking-wider flex items-center gap-1.5">
               <FileText className="h-4.5 w-4.5 text-indigo-650" />
               Live Structure Preview

@@ -404,7 +404,7 @@ const GeneratePaper = () => {
 
           {/* Right layout metadata */}
           <div className="space-y-6">
-            <div className="premium-card p-6 space-y-5 sticky top-20">
+            <div className="premium-card p-6 space-y-5 sticky top-20 gpu-accelerated">
               <h3 className="font-extrabold text-slate-900 text-sm flex items-center gap-2 pb-3.5 border-b border-slate-100">
                 <School className="h-4.5 w-4.5 text-indigo-650" />
                 Exam details

@@ -100,7 +100,7 @@ const DashboardLayout = ({ children }) => {
   );
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] flex bg-grid-pattern">
+    <div className="min-h-screen bg-[#f8fafc] flex">
       {/* Desktop Sidebar (Permanent) */}
       <div className="hidden lg:block w-64 flex-shrink-0">
         <SidebarContent />
@@ -128,7 +128,7 @@ const DashboardLayout = ({ children }) => {
       )}
 
       {/* Main View Wrapper */}
-      <div className="flex-1 flex flex-col min-w-0 overflow-y-auto bg-[#f1f5f9]">
+      <div className="flex-1 flex flex-col min-w-0 overflow-y-auto bg-[#f1f5f9] scroll-smooth">
         {/* Top Navbar */}
         <header className="h-12 flex items-center justify-between px-6 bg-slate-900 border-b border-slate-800 sticky top-0 z-40 shadow-[0_4px_12px_rgba(0,0,0,0.15)]">
           <div className="flex items-center gap-3">

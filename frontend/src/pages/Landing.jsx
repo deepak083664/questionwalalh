@@ -77,7 +77,7 @@ const Landing = () => {
           <div className="flex items-center gap-1.5 sm:gap-3">
             {isAuthenticated ? (
               <button
-                onClick={() => navigate('/')}
+                onClick={() => navigate('/dashboard')}
                 className="px-3 sm:px-4.5 py-2 bg-indigo-650 hover:bg-indigo-700 text-white font-bold rounded-xl text-xs flex items-center gap-1.5 shadow-sm transition-all"
               >
                 <span className="hidden sm:inline">Go to </span>Dashboard
@@ -120,7 +120,7 @@ const Landing = () => {
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 pt-4">
             <button
-              onClick={() => navigate(isAuthenticated ? '/' : '/register')}
+              onClick={() => navigate(isAuthenticated ? '/dashboard' : '/register')}
               className="w-full sm:w-auto px-7 py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-lg shadow-indigo-600/10 flex items-center justify-center gap-2 text-sm"
             >
               Start Generating Free

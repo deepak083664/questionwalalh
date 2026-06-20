@@ -1,17 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { GoogleLogin } from '@react-oauth/google';
 import { GraduationCap, Mail, Lock, User, ArrowRight, AlertCircle } from 'lucide-react';
 
 const Register = () => {
-  const { register, loginWithGoogle } = useAuth();
+  const { register, loginWithGoogle, isAuthenticated, loading: authLoading, isServerWakingUp } = useAuth();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (!authLoading && isAuthenticated) {
+      navigate('/dashboard', { replace: true });
+    }
+  }, [isAuthenticated, authLoading, navigate]);
+
+  // Handle premium restoring session visual state
+  if (authLoading && localStorage.getItem('token')) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-indigo-100/40 via-slate-50 to-violet-100/40 px-4 font-sans bg-grid-pattern">
+        <div className="flex flex-col items-center gap-4 text-center max-w-sm">
+          <div className="h-12 w-12 animate-spin rounded-full border-4 border-indigo-600 border-t-transparent"></div>
+          <p className="text-sm font-semibold text-slate-700">Restoring your session...</p>
+          {isServerWakingUp && (
+            <p className="text-xs text-amber-600 font-semibold animate-pulse mt-2">
+              Waking up backend server (Render free tier can take up to a minute)...
+            </p>
+          )}
+        </div>
+      </div>
+    );
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();

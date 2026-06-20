@@ -6,6 +6,7 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isServerWakingUp, setIsServerWakingUp] = useState(false);
 
   // Restore session on application load
   useEffect(() => {
@@ -16,16 +17,28 @@ export const AuthProvider = ({ children }) => {
         return;
       }
 
+      const timer = setTimeout(() => {
+        setIsServerWakingUp(true);
+      }, 2000);
+
       try {
         const res = await api.get('/api/auth/me');
+        clearTimeout(timer);
+        setIsServerWakingUp(false);
         if (res.data.success) {
           setUser(res.data.user);
         } else {
           localStorage.removeItem('token');
         }
       } catch (err) {
+        clearTimeout(timer);
+        setIsServerWakingUp(false);
         console.error('Session restore failed:', err.message);
-        localStorage.removeItem('token');
+        // Only clear token if we got a direct auth error (401 or 403) from the server.
+        // Keep the token if it's a network timeout / server waking up / connection error.
+        if (err.response && (err.response.status === 401 || err.response.status === 403)) {
+          localStorage.removeItem('token');
+        }
       } finally {
         setLoading(false);
       }
@@ -99,6 +112,7 @@ export const AuthProvider = ({ children }) => {
       value={{
         user,
         loading,
+        isServerWakingUp,
         isAuthenticated: !!user,
         login,
         register,
