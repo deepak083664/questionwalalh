@@ -1,5 +1,5 @@
-import React from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import ProtectedRoute from './ProtectedRoute';
 import DashboardLayout from '../layouts/DashboardLayout';
 
@@ -10,11 +10,22 @@ import Register from '../pages/Register';
 import Dashboard from '../pages/Dashboard';
 import GeneratePaper from '../pages/GeneratePaper';
 import OCRImport from '../pages/OCRImport';
-import QuestionBank from '../pages/QuestionBank';
 import PaperBuilder from '../pages/PaperBuilder';
 import History from '../pages/History';
 
 const AppRoutes = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    // Reset window scroll position
+    window.scrollTo(0, 0);
+    // Reset layout viewport scroll position
+    const mainScrollContent = document.getElementById('main-scroll-content');
+    if (mainScrollContent) {
+      mainScrollContent.scrollTop = 0;
+    }
+  }, [pathname]);
+
   return (
     <Routes>
       {/* Public Routes */}
@@ -45,14 +56,6 @@ const AppRoutes = () => {
           element={
             <DashboardLayout>
               <OCRImport />
-            </DashboardLayout>
-          }
-        />
-        <Route
-          path="/bank"
-          element={
-            <DashboardLayout>
-              <QuestionBank />
             </DashboardLayout>
           }
         />

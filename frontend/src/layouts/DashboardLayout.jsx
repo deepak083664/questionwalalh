@@ -33,7 +33,6 @@ const DashboardLayout = ({ children }) => {
     { name: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
     { name: 'AI Generator', path: '/generate', icon: BrainCircuit },
     { name: 'OCR Question Scanner', path: '/ocr-import', icon: ScanLine },
-    { name: 'Question Bank', path: '/bank', icon: Database },
     { name: 'Saved Papers', path: '/history', icon: History },
   ];
 
@@ -128,7 +127,7 @@ const DashboardLayout = ({ children }) => {
       )}
 
       {/* Main View Wrapper */}
-      <div className="flex-1 flex flex-col min-w-0 overflow-y-auto bg-slate-100/60 scroll-smooth bg-grid-pattern">
+      <div id="main-scroll-content" className="flex-1 flex flex-col min-w-0 overflow-y-auto bg-slate-100/60 scroll-smooth bg-grid-pattern">
         {/* Top Navbar */}
         <header className="h-14 flex items-center justify-between px-6 bg-white/80 border-b border-slate-150 sticky top-0 z-40 backdrop-blur-md shadow-sm flex-shrink-0">
           <div className="flex items-center gap-3">

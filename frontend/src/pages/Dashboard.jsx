@@ -73,13 +73,6 @@ const Dashboard = () => {
       clay: 'bg-indigo-50 border-indigo-100/50 shadow-sm',
     },
     {
-      title: 'Question Bank Count',
-      value: stats?.savedQuestionsCount || 0,
-      icon: Database,
-      color: 'text-purple-650 bg-white border border-purple-150',
-      clay: 'bg-purple-50 border-purple-100/50 shadow-sm',
-    },
-    {
       title: 'Total AI Questions',
       value: stats?.totalQuestionsCount || 0,
       icon: BrainCircuit,
@@ -110,7 +103,7 @@ const Dashboard = () => {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {statCards.map((card, index) => {
           const Icon = card.icon;
           return (
