@@ -17,7 +17,7 @@ const cleanJSON = (str) => {
 /**
  * Fallback question bank to simulate AI generation if API key is not provided.
  */
-const getFallbackQuestions = (subject, classLevel, count, type, language) => {
+const getFallbackQuestions = (subject, classLevel, count, type, language, chapter, topic) => {
   const isHindi = language === 'Hindi';
   const subLower = (subject || '').toLowerCase();
 
@@ -225,6 +225,45 @@ const getFallbackQuestions = (subject, classLevel, count, type, language) => {
     ];
   }
 
+  // If the user provided a specific chapter or topic, insert generic placeholder questions for it so they remain relevant in fallback mode
+  if (chapter || topic) {
+    const focus = topic || chapter;
+    templates.unshift(
+      {
+        text: isHindi 
+          ? `कक्षा ${classLevel} के ${subject} पाठ्यक्रम के अनुसार, "${focus}" के मुख्य सिद्धांतों और अवधारणाओं की व्याख्या कीजिए।`
+          : `Explain the key principles and fundamental concepts of "${focus}" as taught in Class ${classLevel} ${subject}.`,
+        options: [],
+        answer: isHindi ? `यह "${focus}" विषय का एक मानक व्याख्यात्मक उत्तर है।` : `This is a standard explanatory response for the topic of "${focus}".`,
+        type: 'Long',
+        marks: 5,
+        difficulty: 'Medium'
+      },
+      {
+        text: isHindi
+          ? `निम्नलिखित में से कौन सा विकल्प "${focus}" से सीधे संबंधित है?`
+          : `Which of the following is directly associated with the concept of "${focus}"?`,
+        options: isHindi 
+          ? [`A) ${focus} का मुख्य अनुप्रयोग`, `B) सामान्य सिद्धांत`, `C) उपरोक्त दोनों`, `D) इनमें से कोई नहीं`] 
+          : [`A) Core application of ${focus}`, `B) General framework`, `C) Both A and B`, `D) None of the above`],
+        answer: 'C',
+        type: 'MCQ',
+        marks: 1,
+        difficulty: 'Easy'
+      },
+      {
+        text: isHindi
+          ? `दैनिक जीवन या व्यावहारिक अनुप्रयोगों में "${focus}" के महत्व पर संक्षेप में चर्चा कीजिए।`
+          : `Briefly discuss the importance and real-world applications of "${focus}".`,
+        options: [],
+        answer: isHindi ? `दैनिक जीवन में "${focus}" के विभिन्न व्यावहारिक उपयोग हैं।` : `There are various practical uses of "${focus}" in day-to-day scenarios.`,
+        type: 'Short',
+        marks: 3,
+        difficulty: 'Medium'
+      }
+    );
+  }
+
   // Filter based on type if not 'Mixed'
   let filtered = templates;
   if (type !== 'Mixed') {
@@ -268,7 +307,7 @@ const generateQuestions = async ({
   // If Gemini client is not configured, return mock data
   if (!genAI) {
     console.log('Gemini API is not configured. Using high-quality fallback generator.');
-    return getFallbackQuestions(subject, classLevel, count, type, language);
+    return getFallbackQuestions(subject, classLevel, count, type, language, chapter, topic);
   }
 
   try {
@@ -276,11 +315,15 @@ const generateQuestions = async ({
     
     const prompt = `You are an expert exam paper setter. Generate exactly ${count} educational questions for a school exam paper.
     
+    STRICT CONSTRAINT:
+    Every single generated question MUST be strictly, directly, and specifically related to the selected Chapter and Topic.
+    - Selected Subject: ${subject}
+    - Selected Chapter: ${chapter || 'General'}
+    - Selected Topic: ${topic || 'General'}
+    Do NOT generate general questions for the subject if a specific Chapter or Topic is specified. Focus only on testing concepts within "${chapter || 'General'}" and "${topic || 'General'}".
+    
     Target details:
     - Class/Grade: ${classLevel}
-    - Subject: ${subject}
-    - Chapter: ${chapter || 'General'}
-    - Topic: ${topic || 'General'}
     - Difficulty Level: ${difficulty}
     - Language: ${language} (Note: If language is Hindi, generate the questions and answers in Hindi Devanagari script, but keep JSON keys in English as specified below)
     - Question Type: ${type} (Options: MCQ, Short, Long, Mixed)
@@ -319,7 +362,7 @@ const generateQuestions = async ({
     // Return fallback in dev/test environment to prevent user blocking
     if (process.env.NODE_ENV !== 'production') {
       console.log('Falling back to local generated questions due to API error.');
-      return getFallbackQuestions(subject, classLevel, count, type, language);
+      return getFallbackQuestions(subject, classLevel, count, type, language, chapter, topic);
     }
     throw error;
   }
