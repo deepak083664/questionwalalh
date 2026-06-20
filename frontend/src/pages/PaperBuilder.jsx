@@ -163,20 +163,20 @@ const PaperBuilder = () => {
   return (
     <div className="space-y-6 max-w-6xl mx-auto font-sans">
       {/* Top Navbar Action Buttons */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200/60">
         <button
           onClick={() => navigate('/history')}
-          className="flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-slate-800 transition-colors"
+          className="flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-slate-800 transition-colors clay-btn clay-btn-flat px-3.5 py-2"
         >
           <ArrowLeft className="h-4 w-4" />
           Back to Archives
         </button>
 
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-3">
           <button
             onClick={handleSavePaper}
             disabled={saveLoading}
-            className="px-4.5 py-2.5 bg-indigo-600 hover:bg-indigo-750 text-white font-bold rounded-xl flex items-center gap-1.5 text-xs shadow-sm"
+            className="px-5 py-3 text-white font-bold rounded-xl flex items-center gap-1.5 text-xs shadow-sm clay-btn clay-btn-indigo"
           >
             {saveLoading ? <div className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-white border-t-transparent" /> : <Save className="h-4 w-4" />}
             Save Changes
@@ -184,7 +184,7 @@ const PaperBuilder = () => {
           
           <button
             onClick={handleDownloadPDF}
-            className="px-4.5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl flex items-center gap-1.5 text-xs shadow-sm animate-pulse"
+            className="px-5 py-3 text-white font-bold rounded-xl flex items-center gap-1.5 text-xs shadow-sm clay-btn clay-btn-emerald animate-pulse"
           >
             <Download className="h-4 w-4" />
             Download PDF
@@ -203,7 +203,7 @@ const PaperBuilder = () => {
         {/* Left Layout Workspace */}
         <div className="lg:col-span-2 space-y-6">
           {/* Header Card */}
-          <div className="bg-white rounded-2xl border border-slate-200/50 p-6 shadow-premium space-y-4">
+          <div className="bg-white/80 p-6 shadow-sm space-y-4 clay-card">
             <h3 className="font-extrabold text-slate-900 text-xs flex items-center gap-2 pb-3 border-b border-slate-100">
               <School className="h-4.5 w-4.5 text-indigo-650" />
               School details & metadata
@@ -264,11 +264,11 @@ const PaperBuilder = () => {
 
           {/* Questions Editor */}
           <div className="space-y-4">
-            <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+            <div className="flex items-center justify-between pb-2 border-b border-slate-150">
               <h3 className="text-sm font-extrabold text-slate-900">Exam questions ({paper.questions.length})</h3>
               <button
                 onClick={() => setShowAddModal(true)}
-                className="px-3.5 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-650 font-bold rounded-xl text-[10px] flex items-center gap-1"
+                className="px-3.5 py-2.5 text-indigo-650 font-bold rounded-xl text-[10px] flex items-center gap-1 clay-btn clay-btn-flat"
               >
                 <Plus className="h-3.5 w-3.5" /> Add Question
               </button>
@@ -280,18 +280,18 @@ const PaperBuilder = () => {
               </div>
             ) : (
               paper.questions.map((q, index) => (
-                <div key={index} className="bg-white rounded-2xl border border-slate-200/50 p-5 shadow-premium space-y-4">
+                <div key={index} className="bg-white/80 p-5 shadow-sm space-y-4 clay-card">
                   <div className="flex items-start justify-between gap-4">
                     <span className="text-[10px] font-bold text-indigo-700 bg-indigo-50/50 px-2.5 py-1 rounded-lg">
                       Question {index + 1}
                     </span>
 
                     {/* Controls */}
-                    <div className="flex items-center gap-1">
+                    <div className="flex items-center gap-2">
                       <button
                         onClick={() => moveQuestion(index, 'up')}
                         disabled={index === 0}
-                        className="p-1.5 hover:bg-slate-50 text-slate-400 disabled:opacity-30 rounded-lg"
+                        className="p-2 hover:bg-slate-100 text-slate-400 disabled:opacity-30 rounded-xl clay-btn clay-btn-flat"
                         title="Move Up"
                       >
                         <ArrowUp className="h-3.5 w-3.5" />
@@ -299,14 +299,14 @@ const PaperBuilder = () => {
                       <button
                         onClick={() => moveQuestion(index, 'down')}
                         disabled={index === paper.questions.length - 1}
-                        className="p-1.5 hover:bg-slate-50 text-slate-400 disabled:opacity-30 rounded-lg"
+                        className="p-2 hover:bg-slate-100 text-slate-400 disabled:opacity-30 rounded-xl clay-btn clay-btn-flat"
                         title="Move Down"
                       >
                         <ArrowDown className="h-3.5 w-3.5" />
                       </button>
                       <button
                         onClick={() => deleteQuestion(index)}
-                        className="p-1.5 hover:bg-red-50 text-red-500 rounded-lg"
+                        className="p-2 hover:bg-rose-50 text-rose-500 rounded-xl clay-btn clay-btn-flat"
                         title="Remove Question"
                       >
                         <Trash2 className="h-3.5 w-3.5" />
@@ -362,13 +362,13 @@ const PaperBuilder = () => {
 
         {/* Right Preview */}
         <div>
-          <div className="bg-slate-100/50 border border-slate-250 rounded-2xl p-5 shadow-sm space-y-4 sticky top-20 gpu-accelerated">
-            <h3 className="font-extrabold text-slate-800 text-xs uppercase tracking-wider flex items-center gap-1.5">
+          <div className="bg-white/70 border border-slate-200/50 p-5 space-y-4 sticky top-20 gpu-accelerated clay-card">
+            <h3 className="font-extrabold text-slate-850 text-xs uppercase tracking-wider flex items-center gap-1.5">
               <FileText className="h-4.5 w-4.5 text-indigo-650" />
               Live Structure Preview
             </h3>
 
-            <div className="bg-white p-5 rounded-xl border border-slate-200/50 shadow-md font-mono text-[9px] space-y-4 max-h-[460px] overflow-y-auto select-none leading-relaxed text-slate-600">
+            <div className="bg-white p-5 rounded-2xl border border-slate-150 shadow-inner font-mono text-[9px] space-y-4 max-h-[460px] overflow-y-auto select-none leading-relaxed text-slate-600 clay-input">
               {/* Preview Details */}
               <div className="text-center font-bold border-b border-slate-100 pb-3">
                 <p className="text-xs font-bold text-slate-900 uppercase tracking-wider truncate">
@@ -417,8 +417,8 @@ const PaperBuilder = () => {
 
       {/* Add Custom Question Modal */}
       {showAddModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/40 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl border border-slate-200 shadow-2xl p-6 w-full max-w-md animate-zoom-in space-y-4 font-sans">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/30 backdrop-blur-sm">
+          <div className="bg-white/95 rounded-3xl border border-slate-200/50 shadow-2xl p-7 w-full max-w-md animate-zoom-in space-y-5 font-sans clay-card">
             <h3 className="font-extrabold text-slate-900 text-sm">Add custom question</h3>
 
             <form onSubmit={handleAddCustomQuestionSubmit} className="space-y-4">
@@ -494,17 +494,17 @@ const PaperBuilder = () => {
                 />
               </div>
 
-              <div className="flex justify-end gap-2 pt-2">
+              <div className="flex justify-end gap-2.5 pt-2">
                 <button
                   type="button"
                   onClick={() => setShowAddModal(false)}
-                  className="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-[10px]"
+                  className="px-4.5 py-2.5 text-slate-700 font-bold rounded-xl text-[10px] clay-btn clay-btn-flat"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-3.5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-[10px]"
+                  className="px-4.5 py-2.5 text-white font-bold rounded-xl text-[10px] clay-btn clay-btn-indigo"
                 >
                   Add to Paper
                 </button>

@@ -139,7 +139,7 @@ const QuestionBank = () => {
       </div>
 
       {/* Filter panel */}
-      <div className="bg-white border border-slate-200/50 rounded-2xl p-5 shadow-premium space-y-4">
+      <div className="bg-white/80 border border-slate-200/50 p-5 space-y-4 clay-card">
         {/* Search */}
         <div className="relative">
           <Search className="absolute left-3.5 top-3 h-4 w-4 text-slate-400" />
@@ -230,7 +230,7 @@ const QuestionBank = () => {
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {questions.map((q) => (
-            <div key={q._id} className="bg-white border border-slate-200/50 rounded-2xl p-5 shadow-premium hover:shadow-card hover:border-slate-300 transition-all duration-200 flex flex-col justify-between">
+            <div key={q._id} className="bg-white/70 p-5 flex flex-col justify-between clay-card">
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <div className="flex flex-wrap gap-1.5">
@@ -270,14 +270,14 @@ const QuestionBank = () => {
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => handleCopyToClipboard(q.text, q._id)}
-                    className="p-1.5 text-slate-450 hover:bg-slate-50 rounded-lg"
+                    className="p-2 text-slate-450 hover:bg-slate-100 rounded-xl clay-btn clay-btn-flat"
                     title="Copy Question Text"
                   >
                     {copiedId === q._id ? <Check className="h-4 w-4 text-emerald-600" /> : <Copy className="h-4 w-4" />}
                   </button>
                   <button
                     onClick={() => handleRemoveFromBank(q._id)}
-                    className="p-1.5 text-red-500 hover:bg-red-50 rounded-lg"
+                    className="p-2 text-rose-500 hover:bg-rose-50 rounded-xl clay-btn clay-btn-flat"
                     title="Remove from Bank"
                   >
                     <Trash2 className="h-4 w-4" />
@@ -291,7 +291,7 @@ const QuestionBank = () => {
 
       {/* Pagination Controls */}
       {totalPages > 1 && (
-        <div className="flex items-center justify-between border-t border-slate-200 bg-white px-4 py-4 sm:px-6 rounded-2xl shadow-premium mt-6">
+        <div className="flex items-center justify-between border-t border-slate-200/60 bg-white/80 px-4 py-4 sm:px-6 mt-6 clay-card">
           <div className="flex flex-1 justify-between sm:hidden">
             <button
               onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
@@ -337,8 +337,8 @@ const QuestionBank = () => {
                     onClick={() => setPage(pNum)}
                     className={`relative inline-flex items-center rounded-xl px-3 py-1.5 text-xs font-bold transition-all duration-150 ${
                       page === pNum
-                        ? 'z-10 bg-indigo-650 text-white shadow-sm'
-                        : 'text-slate-700 hover:bg-slate-50 hover:text-indigo-650'
+                        ? 'z-10 text-white clay-btn clay-btn-indigo px-3 py-1.5 shadow-sm'
+                        : 'text-slate-700 hover:bg-slate-100 hover:text-indigo-650 clay-btn clay-btn-flat px-3 py-1.5'
                     }`}
                   >
                     {pNum}

@@ -317,15 +317,15 @@ const GeneratePaper = () => {
 
             <button
               type="submit"
-              className="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-lg shadow-indigo-600/10 flex items-center justify-center gap-1.5 text-xs"
+              className="w-full py-3.5 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 clay-btn clay-btn-indigo"
             >
-              <Sparkles className="h-4 w-4" />
+              <Sparkles className="h-4 w-4 animate-pulse" />
               Generate Questions via Gemini AI
             </button>
           </form>
 
           {/* Guidelines info card */}
-          <div className="bg-slate-50 border border-slate-200/50 rounded-2xl p-6 space-y-4 shadow-sm self-start">
+          <div className="bg-white/80 border border-slate-200/50 rounded-2xl p-6 space-y-4 shadow-sm self-start clay-card">
             <h3 className="font-extrabold text-slate-900 flex items-center gap-2 text-xs uppercase tracking-wider">
               <HelpCircle className="h-4.5 w-4.5 text-indigo-650" />
               AI Guidelines
@@ -363,37 +363,37 @@ const GeneratePaper = () => {
                 <div
                   key={q._id}
                   onClick={() => toggleSelectQuestion(q._id)}
-                  className={`bg-white p-5 rounded-xl border cursor-pointer flex gap-4 transition-all duration-150 ${
+                  className={`p-5 rounded-2xl border cursor-pointer flex gap-4 transition-all duration-200 ${
                     active
-                      ? 'border-indigo-600 shadow-sm'
-                      : 'border-slate-200/60 hover:border-slate-300'
-                  }`}
+                      ? 'bg-indigo-50/70 border-indigo-400 shadow-sm'
+                      : 'bg-white/70 border-slate-200/60 hover:border-slate-350 shadow-sm'
+                  } clay-card`}
                 >
-                  <div className={`mt-0.5 h-4 w-4 rounded border flex items-center justify-center flex-shrink-0 transition-colors ${
-                    active ? 'bg-indigo-600 border-indigo-600 text-white' : 'border-slate-300'
-                  }`}>
-                    {active && <Check className="h-3 w-3" />}
+                  <div className={`mt-0.5 h-4.5 w-4.5 rounded-lg border flex items-center justify-center flex-shrink-0 transition-all ${
+                    active ? 'bg-indigo-600 border-indigo-600 text-white shadow-sm' : 'bg-slate-100 border-slate-300'
+                  }`} style={{ boxShadow: active ? 'inset 1px 1px 2px rgba(255,255,255,0.45)' : 'inset 1px 1px 2px rgba(0,0,0,0.05)' }}>
+                    {active && <Check className="h-3.5 w-3.5" />}
                   </div>
 
                   <div className="flex-1 space-y-2">
                     <div className="flex items-center justify-between text-[9px] font-bold text-slate-400 uppercase tracking-wider">
                       <span>Question {idx + 1} • {q.type}</span>
-                      <span className="bg-slate-100 px-2 py-0.5 rounded text-slate-650 font-bold">{q.marks} Marks</span>
+                      <span className="bg-white/85 border border-slate-250 px-2.5 py-0.5 rounded-lg text-slate-650 font-bold clay-badge">{q.marks} Marks</span>
                     </div>
                     <p className="text-xs font-semibold text-slate-900 leading-relaxed">{q.text}</p>
                     
                     {q.type === 'MCQ' && q.options && q.options.length > 0 && (
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-2">
-                        {q.options.map((opt, oIdx) => (
-                          <div key={oIdx} className="bg-slate-50 border border-slate-100 p-2 text-[10px] rounded-lg text-slate-500 font-semibold truncate">
-                            {opt}
-                          </div>
-                        ))}
-                      </div>
+                       <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-2">
+                         {q.options.map((opt, oIdx) => (
+                           <div key={oIdx} className="bg-slate-100/50 border border-slate-200/50 p-2 text-[10px] rounded-lg text-slate-500 font-semibold truncate shadow-inner">
+                             {opt}
+                           </div>
+                         ))}
+                       </div>
                     )}
 
-                    <div className="bg-indigo-50/40 border border-indigo-100 text-indigo-750 p-3 rounded-lg text-[10px] font-semibold leading-relaxed mt-3">
-                      <span className="font-bold uppercase tracking-wider block text-indigo-500 text-[8px] mb-1">Answer / Scheme:</span>
+                    <div className="bg-white/80 border border-indigo-100 text-indigo-750 p-3 rounded-2xl text-[10px] font-semibold leading-relaxed mt-3 shadow-inner">
+                      <span className="font-extrabold uppercase tracking-wider block text-indigo-500 text-[8px] mb-1">Answer / Scheme:</span>
                       {q.answer}
                     </div>
                   </div>
@@ -493,12 +493,11 @@ const GeneratePaper = () => {
                   ))}
                 </div>
               </div>
-
-              <div className="pt-2 border-t border-slate-100 flex flex-col gap-2">
+              <div className="pt-2.5 border-t border-slate-100 flex flex-col gap-3.5">
                 <button
                   onClick={handleAssemblePaper}
                   disabled={loading}
-                  className="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-lg shadow-indigo-600/10"
+                  className="w-full py-3.5 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 clay-btn clay-btn-indigo"
                 >
                   {loading ? (
                     <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
@@ -512,7 +511,7 @@ const GeneratePaper = () => {
                 
                 <button
                   onClick={() => setStep(1)}
-                  className="w-full py-2 bg-slate-50 hover:bg-slate-100 text-slate-700 font-bold border border-slate-200 rounded-xl text-[10px]"
+                  className="w-full py-2.5 text-slate-700 font-bold rounded-xl text-[10px] clay-btn clay-btn-flat"
                 >
                   Edit parameters
                 </button>

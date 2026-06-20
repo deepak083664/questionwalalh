@@ -22,12 +22,15 @@ const Login = () => {
   // Handle premium restoring session visual state
   if (authLoading && localStorage.getItem('token')) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-indigo-100/40 via-slate-50 to-violet-100/40 px-4 font-sans bg-grid-pattern">
-        <div className="flex flex-col items-center gap-4 text-center max-w-sm">
-          <div className="h-12 w-12 animate-spin rounded-full border-4 border-indigo-600 border-t-transparent"></div>
-          <p className="text-sm font-semibold text-slate-700">Restoring your session...</p>
+      <div className="min-h-screen flex flex-col items-center justify-center bg-[#f4f6fa] px-4 font-sans bg-grid-pattern">
+        <div className="clay-card bg-white/80 p-8 rounded-3xl text-center max-w-sm flex flex-col items-center gap-4">
+          <div className="h-14 w-14 relative flex items-center justify-center">
+            <div className="absolute inset-0 rounded-full border-4 border-indigo-650/20 border-t-indigo-650 animate-spin"></div>
+            <GraduationCap className="h-6 w-6 text-indigo-600 animate-pulse" />
+          </div>
+          <p className="text-sm font-extrabold text-slate-800">Restoring your session...</p>
           {isServerWakingUp && (
-            <p className="text-xs text-amber-600 font-semibold animate-pulse mt-2">
+            <p className="text-xs text-amber-600 font-bold animate-pulse mt-1">
               Waking up backend server (Render free tier can take up to a minute)...
             </p>
           )}
@@ -72,11 +75,11 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-indigo-100/40 via-slate-50 to-violet-100/40 px-4 py-16 font-sans bg-grid-pattern">
-      <div className="w-full max-w-[380px] space-y-6">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-[#eef2f6] px-4 py-16 font-sans bg-grid-pattern">
+      <div className="w-full max-w-[390px] space-y-6 clay-animate-fade">
         {/* Brand Header */}
         <div className="flex flex-col items-center text-center">
-          <div className="h-11 w-11 bg-indigo-600 text-white flex items-center justify-center rounded-xl shadow-md mb-3">
+          <div className="h-12 w-12 bg-white text-indigo-600 border border-slate-200/50 flex items-center justify-center rounded-2xl shadow-sm mb-3 clay-badge">
             <GraduationCap className="h-6 w-6" />
           </div>
           <h2 className="text-xl font-extrabold text-slate-900 tracking-tight">
@@ -88,9 +91,9 @@ const Login = () => {
         </div>
 
         {/* Form Card */}
-        <div className="bg-white border border-slate-200/60 shadow-premium p-8 rounded-2xl space-y-6">
+        <div className="bg-white/80 border border-slate-200/60 p-8 rounded-3xl space-y-6 backdrop-blur-md clay-card">
           {error && (
-            <div className="flex items-start gap-2.5 p-3.5 rounded-xl bg-red-50 text-red-650 text-xs font-semibold border border-red-100">
+            <div className="flex items-start gap-2.5 p-3.5 rounded-xl bg-rose-50 text-rose-650 text-xs font-semibold border border-rose-100">
               <AlertCircle className="h-4.5 w-4.5 flex-shrink-0 mt-0.5" />
               <span>{error}</span>
             </div>
@@ -98,7 +101,7 @@ const Login = () => {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">
+              <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-450 mb-1.5 ml-1">
                 Email address
               </label>
               <input
@@ -106,14 +109,14 @@ const Login = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="teacher@school.edu"
-                className="w-full px-3.5 py-2 border border-slate-250 rounded-xl text-xs font-semibold outline-none focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600/10 placeholder-slate-400 transition-all"
+                className="w-full px-4 py-2.5 text-xs font-semibold placeholder-slate-400"
                 required
               />
             </div>
 
             <div>
-              <div className="flex items-center justify-between mb-1.5">
-                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-400">
+              <div className="flex items-center justify-between mb-1.5 ml-1">
+                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-450">
                   Password
                 </label>
               </div>
@@ -122,7 +125,7 @@ const Login = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full px-3.5 py-2 border border-slate-250 rounded-xl text-xs font-semibold outline-none focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600/10 placeholder-slate-400 transition-all"
+                className="w-full px-4 py-2.5 text-xs font-semibold placeholder-slate-400"
                 required
               />
             </div>
@@ -130,7 +133,7 @@ const Login = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-sm disabled:opacity-50 transition-all"
+              className="w-full py-3 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-sm disabled:opacity-50 clay-btn clay-btn-indigo"
             >
               {loading ? (
                 <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
@@ -145,13 +148,13 @@ const Login = () => {
 
           {/* Divider */}
           <div className="flex items-center">
-            <div className="flex-grow border-t border-slate-100"></div>
+            <div className="flex-grow border-t border-slate-200/50"></div>
             <span className="px-3.5 text-[9px] font-bold uppercase tracking-wider text-slate-400">Or</span>
-            <div className="flex-grow border-t border-slate-100"></div>
+            <div className="flex-grow border-t border-slate-200/50"></div>
           </div>
 
           {/* Google Login Wrapper */}
-          <div className="flex justify-center">
+          <div className="flex justify-center border border-slate-200/50 p-2.5 bg-slate-50/50 rounded-2xl clay-input">
             <GoogleLogin
               onSuccess={handleGoogleSuccess}
               onError={handleGoogleError}
