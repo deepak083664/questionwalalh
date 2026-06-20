@@ -8,25 +8,29 @@ export default {
   theme: {
     extend: {
       colors: {
-        'indigo-650': '#4f46e5',
+        'indigo-650': '#6366f1',
         primary: {
-          50: '#f5f7ff',
-          100: '#ebedff',
-          200: '#dbe0ff',
+          50: '#f5f6ff',
+          100: '#eef2ff',
+          200: '#e0e7ff',
           305: '#c2cbff',
           400: '#a1acff',
-          500: '#6366f1', // Indigo 500
-          600: '#4f46e5', // Deep Indigo 600 (Primary)
-          700: '#4338ca', // Royal Blue/Indigo 700
-          800: '#3730a3',
-          900: '#312e81',
+          500: '#6366f1', // Indigo 500 (Primary)
+          600: '#6366f1', // Vibrant Primary
+          700: '#4f46e5',
+          800: '#4338ca',
+          900: '#3730a3',
         },
         secondary: {
           50: '#faf5ff',
           100: '#f3e8ff',
-          500: '#a855f7',
-          600: '#9333ea', // Purple Accent (Secondary)
-          700: '#7e22ce',
+          500: '#8b5cf6', // Violet 500 (Secondary)
+          600: '#8b5cf6',
+          700: '#7c3aed',
+        },
+        accent: {
+          500: '#06b6d4', // Cyan (Accent)
+          600: '#0891b2',
         },
         neutral: {
           50: '#f8fafc',  // Very light gray backdrop

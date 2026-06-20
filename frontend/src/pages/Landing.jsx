@@ -26,7 +26,7 @@ const Landing = () => {
   const features = [
     {
       icon: BrainCircuit,
-      title: 'Gemini AI Generator',
+      title: 'Question Wallah AI Generator',
       description: 'Generate syllabus-aligned questions (MCQ, Short, Long) across subjects and classes in seconds.'
     },
     {
@@ -62,94 +62,102 @@ const Landing = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-white text-slate-800 antialiased font-sans">
+    <div className="min-h-screen bg-transparent text-slate-800 dark:text-slate-200 antialiased font-sans">
       {/* Top Navbar Header */}
-      <header className="border-b border-slate-200/50 bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+      <header className="sticky top-0 z-50 w-full bg-white/60 dark:bg-slate-900/60 backdrop-blur-md border-b border-slate-200/50 dark:border-slate-850/50 shadow-sm transition-all duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-1.5 sm:gap-2">
-            <GraduationCap className="h-6 w-6 sm:h-7 sm:w-7 text-indigo-650" />
-            <span className="font-extrabold text-base sm:text-lg tracking-tight text-slate-900">
-              Question<span className="text-indigo-650">Wallah</span>
+            <GraduationCap className="h-6 w-6 sm:h-7 sm:w-7 text-indigo-500 animate-pulse" />
+            <span className="font-extrabold text-base sm:text-lg tracking-tight text-slate-900 dark:text-white">
+              Question<span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-purple-500 to-cyan-500">Wallah</span>
             </span>
           </div>
 
-          <nav className="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-600">
-            <a href="#features" className="hover:text-indigo-650 transition-colors">Features</a>
-            <a href="#faq" className="hover:text-indigo-650 transition-colors">FAQ</a>
+          <nav className="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-650 dark:text-slate-300">
+            <a href="#features" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Features</a>
+            <a href="#faq" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">FAQ</a>
           </nav>
 
           <div className="flex items-center gap-1.5 sm:gap-3">
             {/* Theme Toggle Button */}
             <button
               onClick={toggleTheme}
-              className="h-9 w-9 bg-slate-50 border border-slate-200 text-slate-500 hover:text-slate-800 rounded-xl flex items-center justify-center transition-all shadow-sm clay-badge"
+              className="h-7.5 w-7.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 rounded-lg flex items-center justify-center transition-all shadow-sm clay-badge"
               title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
             >
               {theme === 'dark' ? (
-                <Sun className="h-4.5 w-4.5 text-amber-500 animate-pulse" />
+                <Sun className="h-3.5 w-3.5 text-amber-500 animate-pulse" />
               ) : (
-                <Moon className="h-4.5 w-4.5 text-slate-650" />
+                <Moon className="h-3.5 w-3.5 text-slate-650" />
               )}
             </button>
 
             {isAuthenticated ? (
               <button
                 onClick={() => navigate('/dashboard')}
-                className="clay-btn clay-btn-indigo px-3.5 py-2.5 text-xs"
+                className="clay-btn clay-btn-indigo px-3 py-2 text-xs"
               >
                 <span className="hidden sm:inline">Go to </span>Dashboard
                 <ArrowRight className="h-3.5 w-3.5" />
               </button>
             ) : (
-              <>
-                <Link to="/login" className="px-2.5 sm:px-4 py-2.5 text-xs font-bold text-slate-655 hover:text-indigo-650 transition-colors">
-                  Sign In
-                </Link>
-                <Link
-                  to="/register"
-                  className="clay-btn clay-btn-indigo px-4 py-2.5 text-xs"
-                >
-                  <span className="hidden sm:inline">Get Started Free</span>
-                  <span className="inline sm:hidden">Sign Up</span>
-                </Link>
-              </>
+              <Link
+                to="/register"
+                className="clay-btn clay-btn-indigo px-3.5 py-2 text-xs"
+              >
+                Sign Up
+              </Link>
             )}
           </div>
         </div>
       </header>
 
       {/* Hero Section */}
-      <section className="relative pt-16 pb-28 overflow-hidden border-b border-slate-100 bg-grid-pattern">
-        {/* Floating background decorative clay circles */}
-        <div className="absolute top-12 left-10 h-20 w-20 bg-indigo-200/40 rounded-full blur-sm clay-floating -z-10"></div>
-        <div className="absolute bottom-16 right-16 h-28 w-28 bg-purple-200/40 rounded-full blur-sm clay-floating [animation-delay:2s] -z-10"></div>
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 h-[450px] w-[650px] bg-indigo-600/5 rounded-full blur-3xl -z-20"></div>
-        
-        <div className="max-w-5xl mx-auto px-6 text-center space-y-8 clay-animate-fade">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-indigo-50 border border-indigo-150 text-indigo-700 text-[10px] font-bold tracking-wider uppercase clay-badge">
+      <section className="relative pt-16 pb-20 overflow-hidden border-b border-indigo-100/50 dark:border-slate-800 bg-grid-pattern min-h-[420px] flex items-center justify-center">
+        {/* Full-width Banner Image Background */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-[0.97] transition-all duration-300 scale-102"
+          style={{ 
+            backgroundImage: "url('/banner.jpg')",
+          }}
+        ></div>
+        {/* Gradient Tint Overlay to ensure text readability in both Light and Dark modes */}
+        <div className="absolute inset-0 bg-gradient-to-b from-white/30 via-white/10 to-white/30 dark:from-slate-950/50 dark:via-slate-950/30 dark:to-slate-950/55 mix-blend-normal"></div>
+
+        {/* Floating background decorative clay circles and aurora glows */}
+        <div className="absolute top-12 left-10 h-24 w-24 bg-purple-400/20 dark:bg-purple-500/10 rounded-full blur-xl clay-floating -z-10"></div>
+        <div className="absolute bottom-12 right-12 h-32 w-32 bg-cyan-400/20 dark:bg-cyan-500/10 rounded-full blur-xl clay-floating [animation-delay:2.5s] -z-10"></div>
+        <div className="absolute top-1/4 left-1/4 w-80 h-80 rounded-full bg-indigo-400/15 dark:bg-indigo-500/5 aurora-blur animate-pulse -z-20"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full bg-cyan-400/15 dark:bg-cyan-500/5 aurora-blur animate-pulse [animation-delay:3s] -z-20"></div>
+
+        {/* Centered Hero Content over the Banner */}
+        <div className="relative z-10 space-y-6 max-w-2xl mx-auto px-6 text-center flex flex-col items-center clay-animate-fade">
+          <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-indigo-50/90 dark:bg-indigo-950/90 border border-indigo-150/50 text-indigo-700 dark:text-indigo-300 text-[10px] font-extrabold tracking-wider uppercase shadow-sm clay-badge">
             <Zap className="h-3.5 w-3.5 text-indigo-500 animate-pulse" /> Modern Assessment Engine
           </span>
           
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-slate-900 leading-[1.15]">
-            Create professional question papers <br />
-            <span className="bg-gradient-to-r from-indigo-600 via-indigo-650 to-purple-650 bg-clip-text text-transparent">in seconds with Gemini AI</span>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight leading-[1.25] text-transparent bg-clip-text bg-gradient-to-r from-slate-950 via-indigo-950 to-purple-950 dark:from-white dark:via-slate-100 dark:to-indigo-200">
+            Create professional question papers <br className="hidden sm:inline" /> in seconds with <br />
+            <span className="text-3d-glowing whitespace-nowrap block sm:inline-block mt-2 sm:mt-1 font-black">
+              Question Wallah AI
+            </span>
           </h1>
 
-          <p className="text-base sm:text-lg text-slate-500 max-w-2xl mx-auto leading-relaxed font-medium">
-            Designed for teachers, coaching classes, and schools. Generate questions instantly, scan textbooks using OCR, customize layouts, and export high-fidelity PDFs.
+          <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-350 max-w-md mx-auto leading-relaxed font-bold">
+            Designed for teachers and schools. Generate questions and scan worksheets instantly.
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
             <button
               onClick={() => navigate(isAuthenticated ? '/dashboard' : '/register')}
-              className="w-full sm:w-auto px-8 py-4 clay-btn clay-btn-indigo shadow-lg text-sm"
+              className="w-auto px-6 py-3 clay-btn clay-btn-indigo text-xs active:scale-95 transition-all shadow-lg flex items-center justify-center gap-2"
             >
               Start Generating Free
-              <ArrowRight className="h-4.5 w-4.5" />
+              <ArrowRight className="h-4 w-4" />
             </button>
             <a
               href="#features"
-              className="w-full sm:w-auto px-8 py-4 clay-btn clay-btn-flat text-sm"
+              className="w-auto px-6 py-3 clay-btn clay-btn-flat text-xs active:scale-95 transition-all shadow-md flex items-center justify-center"
             >
               Explore Features
             </a>
@@ -158,13 +166,13 @@ const Landing = () => {
       </section>
 
       {/* Features Grid */}
-      <section id="features" className="py-20 bg-slate-50/50 border-b border-slate-100">
+      <section id="features" className="pt-10 pb-16 bg-slate-50/30 dark:bg-slate-950/20 border-b border-indigo-50/20 dark:border-slate-800">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center max-w-2xl mx-auto mb-16 space-y-2">
-            <h2 className="text-3xl font-extrabold tracking-tight text-slate-900">
-              SaaS Assessment Features
+            <h2 className="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white">
+              QuestionWallah Features
             </h2>
-            <p className="text-sm text-slate-500 font-medium">
+            <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">
               Everything you need to write, manage, and download curriculum tests.
             </p>
           </div>
@@ -173,12 +181,12 @@ const Landing = () => {
             {features.map((feat, index) => {
               const Icon = feat.icon;
               return (
-                <div key={index} className="clay-card p-6 space-y-4 bg-white/70 backdrop-blur-sm clay-animate-fade" style={{ animationDelay: `${index * 0.1}s` }}>
-                  <div className="h-11 w-11 bg-indigo-50 border border-indigo-100 text-indigo-650 rounded-2xl flex items-center justify-center shadow-sm clay-badge">
+                <div key={index} className="clay-card p-6 space-y-4 bg-white/60 dark:bg-slate-900/60 backdrop-blur-sm clay-animate-fade" style={{ animationDelay: `${index * 0.1}s` }}>
+                  <div className="h-11 w-11 bg-indigo-50 dark:bg-indigo-950/50 border border-indigo-100 dark:border-indigo-900/40 text-indigo-500 dark:text-indigo-400 rounded-2xl flex items-center justify-center shadow-sm clay-badge">
                     <Icon className="h-5.5 w-5.5" />
                   </div>
-                  <h3 className="font-extrabold text-slate-900 text-base">{feat.title}</h3>
-                  <p className="text-xs text-slate-500 leading-relaxed font-semibold">{feat.description}</p>
+                  <h3 className="font-extrabold text-slate-900 dark:text-white text-base">{feat.title}</h3>
+                  <p className="text-xs text-slate-500 dark:text-slate-450 leading-relaxed font-semibold">{feat.description}</p>
                 </div>
               );
             })}
@@ -187,14 +195,14 @@ const Landing = () => {
       </section>
 
       {/* Benefits */}
-      <section className="py-20 border-b border-slate-100">
+      <section className="py-20 border-b border-indigo-50/20 dark:border-slate-800">
         <div className="max-w-5xl mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
-              <h2 className="text-3xl font-extrabold tracking-tight text-slate-900">
+              <h2 className="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white">
                 Created to save teachers hours of workload
               </h2>
-              <p className="text-sm text-slate-500 leading-relaxed font-medium">
+              <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed font-medium">
                 No more writing questions from scratch or manually aligning margins in Microsoft Word. Question Wallah automates assessment drafting, so you can focus on helping students.
               </p>
               <div className="space-y-3">
@@ -203,7 +211,7 @@ const Landing = () => {
                   'Bilingual settings (English & Hindi support).',
                   'Instant print-ready formatted A4 layouts.'
                 ].map((point, i) => (
-                  <div key={i} className="flex items-center gap-2.5 text-xs font-bold text-slate-700">
+                  <div key={i} className="flex items-center gap-2.5 text-xs font-bold text-slate-700 dark:text-slate-350">
                     <CheckCircle className="h-4.5 w-4.5 text-emerald-500 flex-shrink-0" />
                     <span>{point}</span>
                   </div>
@@ -211,20 +219,20 @@ const Landing = () => {
               </div>
             </div>
 
-            <div className="bg-slate-50/50 border border-slate-200/50 rounded-3xl p-8 space-y-4 shadow-inner clay-input">
+            <div className="bg-slate-50/50 dark:bg-slate-950/20 border border-slate-200/50 dark:border-slate-800/50 rounded-3xl p-8 space-y-4 shadow-inner clay-input">
               <div className="flex gap-2">
                 <div className="h-3 w-3 bg-rose-400 rounded-full border border-rose-500"></div>
                 <div className="h-3 w-3 bg-amber-400 rounded-full border border-amber-500"></div>
                 <div className="h-3 w-3 bg-emerald-450 rounded-full border border-emerald-500"></div>
               </div>
-              <div className="bg-white/80 p-5 rounded-2xl shadow-sm space-y-2 border border-white clay-card">
-                <span className="text-[9px] font-bold text-indigo-600 block uppercase tracking-wide">Generated MCQ Preview</span>
-                <p className="text-xs font-extrabold text-slate-900">Q1. Which of the following is the powerhouse of cell?</p>
-                <div className="grid grid-cols-2 gap-2.5 text-[9px] font-semibold text-slate-500 mt-2">
-                  <span className="bg-slate-50/70 p-2 rounded-lg border border-slate-100">A) Ribosome</span>
-                  <span className="bg-indigo-50/70 p-2 rounded-lg border border-indigo-100/50 text-indigo-650 font-bold">B) Mitochondria</span>
-                  <span className="bg-slate-50/70 p-2 rounded-lg border border-slate-100">C) Golgi body</span>
-                  <span className="bg-slate-50/70 p-2 rounded-lg border border-slate-100">D) Lysosome</span>
+              <div className="bg-white/80 dark:bg-slate-900/80 p-5 rounded-2xl shadow-sm space-y-2 border border-white dark:border-slate-850 clay-card">
+                <span className="text-[9px] font-bold text-indigo-500 dark:text-indigo-400 block uppercase tracking-wide">Generated MCQ Preview</span>
+                <p className="text-xs font-extrabold text-slate-900 dark:text-white">Q1. Which of the following is the powerhouse of cell?</p>
+                <div className="grid grid-cols-2 gap-2.5 text-[9px] font-semibold text-slate-500 dark:text-slate-450 mt-2">
+                  <span className="bg-slate-50/70 dark:bg-slate-950/40 p-2 rounded-lg border border-slate-100 dark:border-slate-800">A) Ribosome</span>
+                  <span className="bg-indigo-50/70 dark:bg-indigo-950/40 p-2 rounded-lg border border-indigo-100/50 dark:border-indigo-900/30 text-indigo-500 dark:text-indigo-400 font-bold">B) Mitochondria</span>
+                  <span className="bg-slate-50/70 dark:bg-slate-950/40 p-2 rounded-lg border border-slate-100 dark:border-slate-800">C) Golgi body</span>
+                  <span className="bg-slate-50/70 dark:bg-slate-950/40 p-2 rounded-lg border border-slate-100 dark:border-slate-800">D) Lysosome</span>
                 </div>
               </div>
             </div>
@@ -233,23 +241,23 @@ const Landing = () => {
       </section>
 
       {/* FAQ accordions */}
-      <section id="faq" className="py-20 bg-slate-50/20 border-b border-slate-100">
+      <section id="faq" className="py-20 bg-slate-50/20 dark:bg-slate-950/10 border-b border-indigo-50/20 dark:border-slate-800">
         <div className="max-w-4xl mx-auto px-6">
           <div className="text-center max-w-2xl mx-auto mb-12 space-y-1">
-            <h2 className="text-3xl font-extrabold tracking-tight text-slate-900">
+            <h2 className="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white">
               Frequently Asked Questions
             </h2>
-            <p className="text-sm text-slate-500 font-medium">Got questions? We have answers.</p>
+            <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">Got questions? We have answers.</p>
           </div>
 
           <div className="space-y-4">
             {faqs.map((faq, idx) => (
-              <div key={idx} className="clay-card p-6 space-y-2 bg-white/70 backdrop-blur-sm">
-                <h4 className="font-extrabold text-slate-900 text-sm flex items-start gap-2">
-                  <HelpCircle className="h-4.5 w-4.5 text-indigo-600 mt-0.5 flex-shrink-0" />
+              <div key={idx} className="clay-card p-6 space-y-2 bg-white/60 dark:bg-slate-900/60 backdrop-blur-sm">
+                <h4 className="font-extrabold text-slate-900 dark:text-white text-sm flex items-start gap-2">
+                  <HelpCircle className="h-4.5 w-4.5 text-indigo-500 dark:text-indigo-400 mt-0.5 flex-shrink-0" />
                   {faq.q}
                 </h4>
-                <p className="text-xs text-slate-500 leading-relaxed font-semibold pl-6">{faq.a}</p>
+                <p className="text-xs text-slate-500 dark:text-slate-450 leading-relaxed font-semibold pl-6">{faq.a}</p>
               </div>
             ))}
           </div>
@@ -257,18 +265,25 @@ const Landing = () => {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-slate-100 py-12 bg-white text-slate-500 font-medium text-xs">
-        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
+      <footer className="relative mt-20 border-t border-slate-850 bg-gradient-to-r from-[#111827] to-[#1E293B] py-16 text-slate-450 font-semibold text-xs overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent"></div>
+        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-8 relative z-10">
           <div className="flex items-center gap-2">
-            <GraduationCap className="h-6 w-6 text-indigo-650" />
-            <span className="font-extrabold text-slate-900">Question Wallah</span>
+            <div className="h-9 w-9 bg-slate-800/80 border border-slate-700/50 flex items-center justify-center rounded-xl shadow-inner clay-badge">
+              <GraduationCap className="h-5 w-5 text-indigo-400 animate-pulse" />
+            </div>
+            <span className="font-extrabold text-white text-sm tracking-tight">
+              Question<span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-cyan-400">Wallah</span>
+            </span>
           </div>
           
-          <p>© {new Date().getFullYear()} Question Wallah SaaS. All rights reserved.</p>
+          <p className="text-slate-400 text-center md:text-left font-medium">
+            © {new Date().getFullYear()} Question Wallah SaaS. Designed for modern global classrooms. All rights reserved.
+          </p>
           
-          <div className="flex gap-4">
-            <span className="hover:text-indigo-650 cursor-pointer">Terms</span>
-            <span className="hover:text-indigo-650 cursor-pointer">Privacy Policy</span>
+          <div className="flex gap-6 text-slate-400 font-bold">
+            <span className="hover:text-indigo-450 transition-all cursor-pointer hover:underline hover:-translate-y-0.5 transform">Terms</span>
+            <span className="hover:text-indigo-450 transition-all cursor-pointer hover:underline hover:-translate-y-0.5 transform">Privacy Policy</span>
           </div>
         </div>
       </footer>

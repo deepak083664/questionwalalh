@@ -425,7 +425,123 @@ const generateSimilarQuestions = async (extractedText, language = 'English') => 
   }
 };
 
+/**
+ * Extract exact questions from raw OCR text "as-it-is" (OCR Only Mode)
+ */
+const extractQuestionsFromOcr = async (extractedText, language = 'English') => {
+  if (!genAI) {
+    console.log('Gemini API is not configured. Returning mock OCR parsed questions.');
+    return [
+      {
+        text: `[Parsed Scanned Question] Summarize the following content: "${extractedText.substring(0, 80)}..."`,
+        options: [],
+        answer: 'Provide general answers based on the topic.',
+        type: 'Short',
+        marks: 3,
+        difficulty: 'Medium',
+      }
+    ];
+  }
+
+  try {
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+    const prompt = `You are an AI assistant helping a teacher. We scanned an exam paper and got the following raw OCR text:
+    
+    ---
+    ${extractedText}
+    ---
+    
+    Read this raw text carefully, clean up any OCR typos or spelling mistakes, and extract the exact questions written in it "as-it-is".
+    Do NOT generate new questions. Just extract the existing questions from the text. 
+    If the text has no clear questions, format the main statements/topics as Short or Long questions.
+    
+    You MUST output the result strictly as a JSON array of objects. Do not write anything else.
+    
+    JSON Schema:
+    {
+      "text": "The exact question text in ${language}",
+      "options": ["A) ...", "B) ...", "C) ...", "D) ..."], // empty [] if not MCQ
+      "answer": "Correct answer or guide answer if present in text, otherwise specify a standard guide answer.",
+      "type": "MCQ" | "Short" | "Long",
+      "marks": number, // standard marks: MCQ=1, Short=2 or 3, Long=5
+      "difficulty": "Easy" | "Medium" | "Hard",
+      "source": "scanned" // MUST be exactly "scanned"
+    }`;
+
+    const result = await model.generateContent(prompt);
+    const cleanedText = cleanJSON(result.response.text());
+    return JSON.parse(cleanedText);
+  } catch (err) {
+    console.error('extractQuestionsFromOcr failed:', err.message);
+    throw err;
+  }
+};
+
+/**
+ * Extract exact scanned questions AND generate similar questions (AI Enhanced Mode)
+ */
+const generateSimilarAndScannedQuestions = async (extractedText, language = 'English') => {
+  if (!genAI) {
+    console.log('Gemini API is not configured. Returning mock OCR combined questions.');
+    return [
+      {
+        text: `[Parsed Scanned Question] Describe key points of: "${extractedText.substring(0, 50)}..."`,
+        options: [],
+        answer: 'Refer to scanned text.',
+        type: 'Short',
+        marks: 3,
+        difficulty: 'Medium',
+      },
+      {
+        text: `[AI Generated Similar] Discuss the applications of the concepts present in: "${extractedText.substring(0, 30)}"?`,
+        options: [],
+        answer: 'Verify application frameworks.',
+        type: 'Long',
+        marks: 5,
+        difficulty: 'Hard',
+      }
+    ];
+  }
+
+  try {
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+    const prompt = `You are an AI assistant helping a teacher. We scanned an exam paper and got the following raw OCR text:
+    
+    ---
+    ${extractedText}
+    ---
+    
+    Perform two tasks:
+    1. Extract all exact questions present in the raw text "as-it-is", cleaning up any OCR typos or spelling mistakes.
+    2. Generate 3 additional similar or complementary questions in ${language} that test the same topics and grade level.
+    
+    Combine both sets of questions (the extracted scanned questions and the newly generated similar questions) into a single JSON array list.
+    
+    You MUST output the result strictly as a JSON array of objects. Do not write anything else.
+    
+    JSON Schema:
+    {
+      "text": "The question text in ${language}",
+      "options": ["A) ...", "B) ...", "C) ...", "D) ..."], // empty [] if not MCQ
+      "answer": "Guide answer or marking scheme.",
+      "type": "MCQ" | "Short" | "Long",
+      "marks": number,
+      "difficulty": "Easy" | "Medium" | "Hard",
+      "source": "scanned" | "generated" // Set to "scanned" for extracted questions, and "generated" for newly generated similar questions
+    }`;
+
+    const result = await model.generateContent(prompt);
+    const cleanedText = cleanJSON(result.response.text());
+    return JSON.parse(cleanedText);
+  } catch (err) {
+    console.error('generateSimilarAndScannedQuestions failed:', err.message);
+    throw err;
+  }
+};
+
 module.exports = {
   generateQuestions,
   generateSimilarQuestions,
+  extractQuestionsFromOcr,
+  generateSimilarAndScannedQuestions,
 };

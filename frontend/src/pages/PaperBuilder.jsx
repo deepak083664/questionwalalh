@@ -203,58 +203,58 @@ const PaperBuilder = () => {
         {/* Left Layout Workspace */}
         <div className="lg:col-span-2 space-y-6">
           {/* Header Card */}
-          <div className="bg-white/80 p-6 shadow-sm space-y-4 clay-card">
-            <h3 className="font-extrabold text-slate-900 text-xs flex items-center gap-2 pb-3 border-b border-slate-100">
-              <School className="h-4.5 w-4.5 text-indigo-650" />
+          <div className="bg-white/60 dark:bg-slate-900/60 p-6 shadow-sm space-y-4 clay-card">
+            <h3 className="font-extrabold text-slate-900 dark:text-white text-xs flex items-center gap-2 pb-3 border-b border-slate-100 dark:border-slate-800/40">
+              <School className="h-4.5 w-4.5 text-indigo-500 dark:text-indigo-400" />
               School details & metadata
             </h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-[9px] font-bold uppercase tracking-wider text-slate-400 mb-1">School Name</label>
+                <label className="block text-[9px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1 ml-1">School Name</label>
                 <input
                   type="text"
                   value={paper.schoolName}
                   onChange={(e) => setPaper({ ...paper, schoolName: e.target.value })}
                   placeholder="School Name Header"
-                  className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl outline-none focus:border-indigo-600 text-xs font-semibold"
+                  className="w-full px-3 py-2 text-xs font-semibold focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600/10"
                 />
               </div>
 
               <div>
-                <label className="block text-[9px] font-bold uppercase tracking-wider text-slate-400 mb-1">Assessment Name</label>
+                <label className="block text-[9px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1 ml-1">Assessment Name</label>
                 <input
                   type="text"
                   value={paper.examName}
                   onChange={(e) => setPaper({ ...paper, examName: e.target.value })}
                   placeholder="e.g. Mid-Term Examination"
-                  className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl outline-none focus:border-indigo-600 text-xs font-semibold"
+                  className="w-full px-3 py-2 text-xs font-semibold focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600/10"
                 />
               </div>
 
               <div>
-                <label className="block text-[9px] font-bold uppercase tracking-wider text-slate-400 mb-1">Exam Title</label>
+                <label className="block text-[9px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1 ml-1">Exam Title</label>
                 <input
                   type="text"
                   value={paper.title}
                   onChange={(e) => setPaper({ ...paper, title: e.target.value })}
-                  className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl outline-none focus:border-indigo-600 text-xs font-semibold"
+                  className="w-full px-3 py-2 text-xs font-semibold focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600/10"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[9px] font-bold uppercase tracking-wider text-slate-400 mb-1">Time (Mins)</label>
+                  <label className="block text-[9px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1 ml-1">Time (Mins)</label>
                   <input
                     type="number"
                     value={paper.duration}
                     onChange={(e) => setPaper({ ...paper, duration: parseInt(e.target.value, 10) || 0 })}
-                    className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl outline-none focus:border-indigo-600 text-xs font-bold"
+                    className="w-full px-3 py-2 text-xs font-bold focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600/10"
                   />
                 </div>
                 <div>
-                  <label className="block text-[9px] font-bold uppercase tracking-wider text-slate-400 mb-1">Total Marks</label>
-                  <div className="w-full py-2 border border-slate-100 bg-slate-50 rounded-xl text-xs font-extrabold text-center text-slate-800">
+                  <label className="block text-[9px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1 ml-1">Total Marks</label>
+                  <div className="w-full py-2 border border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 rounded-xl text-xs font-extrabold text-center text-slate-800 dark:text-slate-200 shadow-inner">
                     {paper.questions.reduce((sum, q) => sum + (q.marks || 0), 0)} Marks
                   </div>
                 </div>
@@ -264,25 +264,25 @@ const PaperBuilder = () => {
 
           {/* Questions Editor */}
           <div className="space-y-4">
-            <div className="flex items-center justify-between pb-2 border-b border-slate-150">
-              <h3 className="text-sm font-extrabold text-slate-900">Exam questions ({paper.questions.length})</h3>
+            <div className="flex items-center justify-between pb-2 border-b border-slate-150 dark:border-slate-800/40">
+              <h3 className="text-sm font-extrabold text-slate-900 dark:text-white">Exam questions ({paper.questions.length})</h3>
               <button
                 onClick={() => setShowAddModal(true)}
-                className="px-3.5 py-2.5 text-indigo-650 font-bold rounded-xl text-[10px] flex items-center gap-1 clay-btn clay-btn-flat"
+                className="px-3.5 py-2.5 text-indigo-500 dark:text-indigo-400 font-bold rounded-xl text-[10px] flex items-center gap-1 clay-btn clay-btn-flat"
               >
                 <Plus className="h-3.5 w-3.5" /> Add Question
               </button>
             </div>
 
             {paper.questions.length === 0 ? (
-              <div className="bg-white border border-slate-200/50 rounded-2xl p-10 text-center text-xs text-slate-500 font-semibold">
+              <div className="bg-white/60 dark:bg-slate-900/60 border border-slate-200/50 dark:border-slate-800/50 rounded-2xl p-10 text-center text-xs text-slate-500 dark:text-slate-400 font-semibold clay-card">
                 No questions compiled. Click add button to build a question.
               </div>
             ) : (
               paper.questions.map((q, index) => (
-                <div key={index} className="bg-white/80 p-5 shadow-sm space-y-4 clay-card">
+                <div key={index} className="bg-white/60 dark:bg-slate-900/60 p-5 shadow-sm space-y-4 clay-card">
                   <div className="flex items-start justify-between gap-4">
-                    <span className="text-[10px] font-bold text-indigo-700 bg-indigo-50/50 px-2.5 py-1 rounded-lg">
+                    <span className="text-[10px] font-bold text-indigo-755 dark:text-indigo-350 bg-indigo-55/30 dark:bg-indigo-950/40 px-2.5 py-1 rounded-lg">
                       Question {index + 1}
                     </span>
 
@@ -291,7 +291,7 @@ const PaperBuilder = () => {
                       <button
                         onClick={() => moveQuestion(index, 'up')}
                         disabled={index === 0}
-                        className="p-2 hover:bg-slate-100 text-slate-400 disabled:opacity-30 rounded-xl clay-btn clay-btn-flat"
+                        className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 disabled:opacity-30 rounded-xl clay-btn clay-btn-flat animate-hover"
                         title="Move Up"
                       >
                         <ArrowUp className="h-3.5 w-3.5" />
@@ -299,14 +299,14 @@ const PaperBuilder = () => {
                       <button
                         onClick={() => moveQuestion(index, 'down')}
                         disabled={index === paper.questions.length - 1}
-                        className="p-2 hover:bg-slate-100 text-slate-400 disabled:opacity-30 rounded-xl clay-btn clay-btn-flat"
+                        className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 disabled:opacity-30 rounded-xl clay-btn clay-btn-flat animate-hover"
                         title="Move Down"
                       >
                         <ArrowDown className="h-3.5 w-3.5" />
                       </button>
                       <button
                         onClick={() => deleteQuestion(index)}
-                        className="p-2 hover:bg-rose-50 text-rose-500 rounded-xl clay-btn clay-btn-flat"
+                        className="p-2 hover:bg-rose-50 dark:hover:bg-rose-950/20 text-rose-500 rounded-xl clay-btn clay-btn-flat animate-hover"
                         title="Remove Question"
                       >
                         <Trash2 className="h-3.5 w-3.5" />
@@ -315,20 +315,20 @@ const PaperBuilder = () => {
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="block text-[8px] font-bold uppercase tracking-wider text-slate-400">Question Text</label>
+                    <label className="block text-[8px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 ml-1">Question Text</label>
                     <textarea
                       value={q.text}
                       onChange={(e) => updateQuestionText(index, e.target.value)}
                       rows="2"
-                      className="w-full px-3.5 py-2.5 bg-white border border-slate-250 rounded-xl text-xs font-semibold outline-none focus:border-indigo-600 leading-relaxed"
+                      className="w-full px-3.5 py-2.5 text-xs font-semibold outline-none focus:border-indigo-600 leading-relaxed"
                     />
                   </div>
 
                   {q.type === 'MCQ' && q.options && q.options.length > 0 && (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pl-4 border-l-2 border-indigo-100">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pl-4 border-l-2 border-indigo-100 dark:border-indigo-900/50">
                       {q.options.map((opt, oIdx) => (
                         <div key={oIdx} className="space-y-1">
-                          <label className="block text-[8px] font-bold uppercase tracking-wider text-slate-400">Option {String.fromCharCode(65 + oIdx)}</label>
+                          <label className="block text-[8px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 ml-1">Option {String.fromCharCode(65 + oIdx)}</label>
                           <input
                             type="text"
                             value={opt}
@@ -337,7 +337,7 @@ const PaperBuilder = () => {
                               updatedQuestions[index].options[oIdx] = e.target.value;
                               setPaper({ ...paper, questions: updatedQuestions });
                             }}
-                            className="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-[11px] font-semibold outline-none"
+                            className="w-full px-3 py-1.5 text-[11px] font-semibold outline-none focus:border-indigo-600"
                           />
                         </div>
                       ))}
@@ -345,13 +345,13 @@ const PaperBuilder = () => {
                   )}
 
                   <div className="w-full max-w-[100px] space-y-1">
-                    <label className="block text-[8px] font-bold uppercase tracking-wider text-slate-400">Marks Weight</label>
+                    <label className="block text-[8px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 ml-1">Marks Weight</label>
                     <input
                       type="number"
                       value={q.marks}
                       onChange={(e) => updateQuestionMarks(index, e.target.value)}
                       min="1"
-                      className="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-extrabold outline-none"
+                      className="w-full px-3 py-1.5 text-xs font-extrabold outline-none focus:border-indigo-600"
                     />
                   </div>
                 </div>
@@ -362,16 +362,16 @@ const PaperBuilder = () => {
 
         {/* Right Preview */}
         <div>
-          <div className="bg-white/70 border border-slate-200/50 p-5 space-y-4 sticky top-20 gpu-accelerated clay-card">
-            <h3 className="font-extrabold text-slate-850 text-xs uppercase tracking-wider flex items-center gap-1.5">
-              <FileText className="h-4.5 w-4.5 text-indigo-650" />
+          <div className="bg-white/60 dark:bg-slate-900/60 border border-slate-200/50 dark:border-slate-800/50 p-5 space-y-4 sticky top-20 gpu-accelerated clay-card">
+            <h3 className="font-extrabold text-slate-850 dark:text-white text-xs uppercase tracking-wider flex items-center gap-1.5">
+              <FileText className="h-4.5 w-4.5 text-indigo-500 dark:text-indigo-400" />
               Live Structure Preview
             </h3>
 
-            <div className="bg-white p-5 rounded-2xl border border-slate-150 shadow-inner font-mono text-[9px] space-y-4 max-h-[460px] overflow-y-auto select-none leading-relaxed text-slate-600 clay-input">
+            <div className="bg-white/80 dark:bg-slate-950/60 p-5 rounded-2xl border border-slate-150 dark:border-slate-800/80 shadow-inner font-mono text-[9px] space-y-4 max-h-[460px] overflow-y-auto select-none leading-relaxed text-slate-650 dark:text-slate-350 clay-input">
               {/* Preview Details */}
-              <div className="text-center font-bold border-b border-slate-100 pb-3">
-                <p className="text-xs font-bold text-slate-900 uppercase tracking-wider truncate">
+              <div className="text-center font-bold border-b border-slate-100 dark:border-slate-800/60 pb-3">
+                <p className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider truncate">
                   {paper.schoolName || 'YOUR SCHOOL NAME HERE'}
                 </p>
                 <p className="mt-0.5 truncate">{paper.examName || 'Assessment Name'}</p>
@@ -385,7 +385,7 @@ const PaperBuilder = () => {
 
               {/* Instructions Preview */}
               {paper.instructions.length > 0 && (
-                <div className="border-b border-slate-100 pb-3 space-y-1">
+                <div className="border-b border-slate-100 dark:border-slate-800/60 pb-3 space-y-1">
                   <span className="font-bold block uppercase tracking-wider text-[7px]">Instructions:</span>
                   {paper.instructions.map((inst, i) => (
                     <p key={i} className="truncate">{i + 1}. {inst}</p>
@@ -400,13 +400,13 @@ const PaperBuilder = () => {
                     <div className="flex-1 truncate">
                       <span className="font-bold">{idx + 1}.</span> {q.text}
                       {q.type === 'MCQ' && (
-                        <div className="grid grid-cols-2 gap-1 mt-1 pl-3 text-[7.5px] text-slate-400 font-semibold">
+                        <div className="grid grid-cols-2 gap-1 mt-1 pl-3 text-[7.5px] text-slate-400 dark:text-slate-500 font-semibold">
                           <span>A) {q.options?.[0]?.substring(0, 15)}...</span>
                           <span>B) {q.options?.[1]?.substring(0, 15)}...</span>
                         </div>
                       )}
                     </div>
-                    <span className="font-bold">[{q.marks}M]</span>
+                    <span className="font-bold text-indigo-500 dark:text-indigo-400">[{q.marks}M]</span>
                   </div>
                 ))}
               </div>
@@ -417,30 +417,30 @@ const PaperBuilder = () => {
 
       {/* Add Custom Question Modal */}
       {showAddModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/30 backdrop-blur-sm">
-          <div className="bg-white/95 rounded-3xl border border-slate-200/50 shadow-2xl p-7 w-full max-w-md animate-zoom-in space-y-5 font-sans clay-card">
-            <h3 className="font-extrabold text-slate-900 text-sm">Add custom question</h3>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/40 backdrop-blur-sm">
+          <div className="bg-white/95 dark:bg-slate-900/95 border border-slate-200/50 dark:border-slate-800/50 shadow-2xl p-7 w-full max-w-md animate-zoom-in space-y-5 font-sans clay-card">
+            <h3 className="font-extrabold text-slate-900 dark:text-white text-sm">Add custom question</h3>
 
             <form onSubmit={handleAddCustomQuestionSubmit} className="space-y-4">
               <div>
-                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Question Text</label>
+                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1 ml-1">Question Text</label>
                 <textarea
                   value={newQuestion.text}
                   onChange={(e) => setNewQuestion({ ...newQuestion, text: e.target.value })}
                   placeholder="Write the question prompt here..."
                   rows="3"
-                  className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-indigo-650"
+                  className="w-full px-3.5 py-2.5 text-xs font-semibold outline-none focus:border-indigo-650"
                   required
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Type</label>
+                  <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1 ml-1">Type</label>
                   <select
                     value={newQuestion.type}
                     onChange={(e) => setNewQuestion({ ...newQuestion, type: e.target.value })}
-                    className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs outline-none"
+                    className="w-full px-2.5 py-1.5 text-xs outline-none select"
                   >
                     <option value="Short">Short Answer</option>
                     <option value="Long">Long Answer</option>
@@ -449,20 +449,20 @@ const PaperBuilder = () => {
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Marks weight</label>
+                  <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1 ml-1">Marks weight</label>
                   <input
                     type="number"
                     value={newQuestion.marks}
                     onChange={(e) => setNewQuestion({ ...newQuestion, marks: parseInt(e.target.value, 10) || 1 })}
                     min="1"
-                    className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs outline-none"
+                    className="w-full px-2.5 py-1.5 text-xs outline-none focus:border-indigo-600"
                   />
                 </div>
               </div>
 
               {newQuestion.type === 'MCQ' && (
                 <div className="space-y-2">
-                  <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-400">Options</label>
+                  <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 ml-1">Options</label>
                   <div className="grid grid-cols-2 gap-2.5">
                     {newQuestion.options.map((opt, idx) => (
                       <input
@@ -475,7 +475,7 @@ const PaperBuilder = () => {
                           setNewQuestion({ ...newQuestion, options });
                         }}
                         placeholder={`Option ${String.fromCharCode(65 + idx)}`}
-                        className="px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs outline-none"
+                        className="px-3 py-1.5 text-xs outline-none focus:border-indigo-600"
                         required
                       />
                     ))}
@@ -484,13 +484,13 @@ const PaperBuilder = () => {
               )}
 
               <div>
-                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Answer Key / Solution</label>
+                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1 ml-1">Answer Key / Solution</label>
                 <input
                   type="text"
                   value={newQuestion.answer}
                   onChange={(e) => setNewQuestion({ ...newQuestion, answer: e.target.value })}
                   placeholder="Expected points / correct key option"
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs outline-none"
+                  className="w-full px-3 py-2 text-xs outline-none focus:border-indigo-600"
                 />
               </div>
 
@@ -498,7 +498,7 @@ const PaperBuilder = () => {
                 <button
                   type="button"
                   onClick={() => setShowAddModal(false)}
-                  className="px-4.5 py-2.5 text-slate-700 font-bold rounded-xl text-[10px] clay-btn clay-btn-flat"
+                  className="px-4.5 py-2.5 text-slate-700 dark:text-slate-300 font-bold rounded-xl text-[10px] clay-btn clay-btn-flat"
                 >
                   Cancel
                 </button>

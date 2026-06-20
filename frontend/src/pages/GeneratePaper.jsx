@@ -17,6 +17,8 @@ import {
   Edit2
 } from 'lucide-react';
 
+import AILoader from '../components/AILoader';
+
 const GeneratePaper = () => {
   const navigate = useNavigate();
   const [step, setStep] = useState(1); // 1: Parameters, 2: Review & Metadata
@@ -218,28 +220,21 @@ const GeneratePaper = () => {
   return (
     <div className="space-y-6 max-w-6xl mx-auto font-sans">
       {/* Step Tracker */}
-      <div className="flex items-center gap-2 text-xs text-slate-400 font-bold tracking-wide mb-2 uppercase">
-        <span className={`${step === 1 ? 'text-indigo-600' : 'text-slate-500'}`}>1. Parameters</span>
-        <ChevronRight className="h-3.5 w-3.5 text-slate-300" />
-        <span className={`${step === 2 ? 'text-indigo-600' : 'text-slate-500'}`}>2. Paper Details</span>
+      <div className="flex items-center gap-2 text-xs text-slate-400 dark:text-slate-500 font-bold tracking-wide mb-2 uppercase">
+        <span className={`${step === 1 ? 'text-indigo-600 dark:text-indigo-400 font-black' : 'text-slate-500 dark:text-slate-500 font-medium'}`}>1. Parameters</span>
+        <ChevronRight className="h-3.5 w-3.5 text-slate-350" />
+        <span className={`${step === 2 ? 'text-indigo-600 dark:text-indigo-400 font-black' : 'text-slate-500 dark:text-slate-500 font-medium'}`}>2. Paper Details</span>
       </div>
 
       {error && (
-        <div className="p-4 rounded-xl bg-red-50 text-red-650 text-xs font-semibold border border-red-100">
+        <div className="p-4 rounded-xl bg-rose-50 dark:bg-rose-950/30 text-rose-650 dark:text-rose-450 text-xs font-semibold border border-rose-100 dark:border-rose-900/50">
           {error}
         </div>
       )}
 
       {loading && step === 1 && (
-        <div className="premium-card p-12 text-center flex flex-col items-center justify-center min-h-[400px]">
-          <div className="h-12 w-12 relative flex items-center justify-center mb-6">
-            <div className="absolute inset-0 rounded-full border-2 border-indigo-600 border-t-transparent animate-spin"></div>
-            <BrainCircuit className="h-6 w-6 text-indigo-650 animate-pulse" />
-          </div>
-          <h3 className="text-base font-extrabold text-slate-800">Gemini is compiling questions...</h3>
-          <p className="text-slate-500 text-xs mt-2 max-w-xs font-semibold leading-relaxed">
-            Curating assessment sheet items based on your lesson criteria and difficulty parameters.
-          </p>
+        <div className="py-8">
+          <AILoader mode="generate" title="Question Wallah AI is compiling questions..." />
         </div>
       )}
 
@@ -247,24 +242,24 @@ const GeneratePaper = () => {
       {!loading && step === 1 && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <form onSubmit={handleGenerate} className="lg:col-span-2 premium-card p-8 space-y-6">
-            <div className="flex items-center gap-3 pb-5 border-b border-slate-100">
-              <div className="h-9 w-9 bg-indigo-50 text-indigo-650 rounded-lg flex items-center justify-center border border-indigo-100">
-                <Settings className="h-4.5 w-4.5" />
+            <div className="flex items-center gap-3 pb-5 border-b border-slate-100 dark:border-slate-800/40">
+              <div className="h-9 w-9 bg-indigo-50 dark:bg-indigo-950 border border-indigo-100 dark:border-indigo-900 text-indigo-650 dark:text-indigo-400 rounded-lg flex items-center justify-center">
+                <Settings className="h-4.5 w-4.5 animate-spin" style={{ animationDuration: '4s' }} />
               </div>
               <div>
-                <h2 className="text-sm font-extrabold text-slate-900">AI Input Configuration</h2>
-                <p className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Lesson parameters</p>
+                <h2 className="text-sm font-extrabold text-slate-900 dark:text-white">AI Input Configuration</h2>
+                <p className="text-[10px] text-slate-405 dark:text-slate-500 font-bold uppercase tracking-wider">Lesson parameters</p>
               </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <div>
-                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-450 mb-1.5">Class / Grade</label>
+                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-450 dark:text-slate-400 mb-1.5 ml-1">Class / Grade</label>
                 <select
                   name="classLevel"
                   value={params.classLevel}
                   onChange={handleParamChange}
-                  className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600/10"
+                  className="w-full px-3 py-2 text-xs font-semibold select focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600/10"
                 >
                   {[...Array(12)].map((_, i) => (
                     <option key={i + 1} value={i + 1}>Class {i + 1}</option>
@@ -273,12 +268,12 @@ const GeneratePaper = () => {
               </div>
 
               <div>
-                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-455 mb-1.5">Subject</label>
+                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-450 dark:text-slate-400 mb-1.5 ml-1">Subject</label>
                 <select
                   name="subject"
                   value={params.subject}
                   onChange={handleParamChange}
-                  className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600/10"
+                  className="w-full px-3 py-2 text-xs font-semibold select focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600/10"
                 >
                   {['Science', 'Mathematics', 'Social Science', 'English', 'Hindi', 'Physics', 'Chemistry', 'Biology', 'History', 'Geography', 'Civics'].map((sub) => (
                     <option key={sub} value={sub}>{sub}</option>
@@ -287,31 +282,31 @@ const GeneratePaper = () => {
               </div>
 
               <div>
-                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-450 mb-1.5">Chapter (Optional)</label>
+                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-450 dark:text-slate-400 mb-1.5 ml-1">Chapter (Optional)</label>
                 <input
                   type="text"
                   name="chapter"
                   value={params.chapter}
                   onChange={handleParamChange}
                   placeholder="e.g. Chemical Reactions"
-                  className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-indigo-600 placeholder-slate-400 focus:ring-1 focus:ring-indigo-600/10"
+                  className="w-full px-3 py-2 text-xs font-semibold outline-none focus:border-indigo-600 placeholder-slate-400 focus:ring-1 focus:ring-indigo-600/10"
                 />
               </div>
 
               <div>
-                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-450 mb-1.5">Topic (Optional)</label>
+                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-450 dark:text-slate-400 mb-1.5 ml-1">Topic (Optional)</label>
                 <input
                   type="text"
                   name="topic"
                   value={params.topic}
                   onChange={handleParamChange}
                   placeholder="e.g. Redox Actions"
-                  className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-indigo-600 placeholder-slate-400 focus:ring-1 focus:ring-indigo-600/10"
+                  className="w-full px-3 py-2 text-xs font-semibold outline-none focus:border-indigo-600 placeholder-slate-400 focus:ring-1 focus:ring-indigo-600/10"
                 />
               </div>
 
               <div>
-                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-450 mb-1.5">Question Count</label>
+                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-450 dark:text-slate-400 mb-1.5 ml-1">Question Count</label>
                 <input
                   type="number"
                   name="count"
@@ -319,18 +314,18 @@ const GeneratePaper = () => {
                   onChange={handleParamChange}
                   min="1"
                   max="30"
-                  className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-bold outline-none focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600/10"
+                  className="w-full px-3 py-2 text-xs font-bold outline-none focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600/10"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-450 mb-1.5">Difficulty Level</label>
+                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-450 dark:text-slate-400 mb-1.5 ml-1">Difficulty Level</label>
                 <select
                   name="difficulty"
                   value={params.difficulty}
                   onChange={handleParamChange}
-                  className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600/10"
+                  className="w-full px-3 py-2 text-xs font-semibold select focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600/10"
                 >
                   <option value="Easy">Easy</option>
                   <option value="Medium">Medium</option>
@@ -339,12 +334,12 @@ const GeneratePaper = () => {
               </div>
 
               <div>
-                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-450 mb-1.5">Language</label>
+                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-450 dark:text-slate-400 mb-1.5 ml-1">Language</label>
                 <select
                   name="language"
                   value={params.language}
                   onChange={handleParamChange}
-                  className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600/10"
+                  className="w-full px-3 py-2 text-xs font-semibold select focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600/10"
                 >
                   <option value="English">English</option>
                   <option value="Hindi">Hindi (Devanagari)</option>
@@ -352,12 +347,12 @@ const GeneratePaper = () => {
               </div>
 
               <div>
-                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-450 mb-1.5">Question Type</label>
+                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-450 dark:text-slate-400 mb-1.5 ml-1">Question Type</label>
                 <select
                   name="type"
                   value={params.type}
                   onChange={handleParamChange}
-                  className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600/10"
+                  className="w-full px-3 py-2 text-xs font-semibold select focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600/10"
                 >
                   <option value="Mixed">Mixed (MCQs, Short & Long)</option>
                   <option value="MCQ">Multiple Choice Questions (MCQ)</option>
@@ -372,17 +367,17 @@ const GeneratePaper = () => {
               className="w-full py-3.5 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 clay-btn clay-btn-indigo"
             >
               <Sparkles className="h-4 w-4 animate-pulse" />
-              Generate Questions via Gemini AI
+              Generate Questions via Question Wallah AI
             </button>
           </form>
 
           {/* Guidelines info card */}
-          <div className="bg-white/80 border border-slate-200/50 rounded-2xl p-6 space-y-4 shadow-sm self-start clay-card">
-            <h3 className="font-extrabold text-slate-900 flex items-center gap-2 text-xs uppercase tracking-wider">
-              <HelpCircle className="h-4.5 w-4.5 text-indigo-650" />
+          <div className="bg-white/60 dark:bg-slate-900/60 border border-slate-200/50 dark:border-slate-800/50 rounded-2xl p-6 space-y-4 shadow-sm self-start clay-card">
+            <h3 className="font-extrabold text-slate-900 dark:text-white flex items-center gap-2 text-xs uppercase tracking-wider">
+              <HelpCircle className="h-4.5 w-4.5 text-indigo-500 dark:text-indigo-400" />
               AI Guidelines
             </h3>
-            <ol className="space-y-4 text-[11px] font-semibold text-slate-500 list-decimal list-inside leading-relaxed">
+            <ol className="space-y-4 text-[11px] font-semibold text-slate-500 dark:text-slate-400 list-decimal list-inside leading-relaxed">
               <li>Select your target class grade and academic subject.</li>
               <li>Input specific chapters or topics for lessons mapping.</li>
               <li>Toggle languages and question count weights.</li>
@@ -397,14 +392,14 @@ const GeneratePaper = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Questions list */}
           <div className="lg:col-span-2 space-y-4">
-            <div className="premium-card p-5 flex justify-between items-center">
+            <div className="premium-card p-5 flex justify-between items-center bg-white/60 dark:bg-slate-900/60">
               <div>
-                <h3 className="font-bold text-slate-800 text-sm">Review Questions</h3>
-                <p className="text-[10px] text-slate-400 mt-0.5 font-semibold">
+                <h3 className="font-bold text-slate-800 dark:text-white text-sm">Review Questions</h3>
+                <p className="text-[10px] text-slate-400 dark:text-slate-500 mt-0.5 font-semibold">
                   Check items you want to keep in the final exam paper.
                 </p>
               </div>
-              <span className="bg-indigo-50 text-indigo-700 px-2.5 py-1.5 rounded-lg text-[10px] font-bold">
+              <span className="bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 px-2.5 py-1.5 rounded-lg text-[10px] font-bold border border-indigo-100 dark:border-indigo-900/35">
                 {selectedQuestionIds.length} / {generatedQuestions.length} Selected
               </span>
             </div>
@@ -422,15 +417,15 @@ const GeneratePaper = () => {
                   }}
                   className={`p-5 rounded-2xl border flex gap-4 transition-all duration-200 ${
                     isEditing
-                      ? 'bg-slate-50 border-indigo-500 shadow-lg cursor-default'
+                      ? 'bg-slate-50 dark:bg-slate-950 border-indigo-500 shadow-lg cursor-default'
                       : active
-                      ? 'bg-indigo-50/70 border-indigo-400 shadow-sm cursor-pointer'
-                      : 'bg-white/70 border-slate-200/60 hover:border-slate-350 shadow-sm cursor-pointer'
+                      ? 'bg-indigo-50/40 dark:bg-indigo-950/30 border-indigo-400/50 dark:border-indigo-900/40 shadow-sm cursor-pointer'
+                      : 'bg-white/60 dark:bg-slate-900/60 border-slate-200/50 dark:border-slate-800/50 hover:border-slate-350 dark:hover:border-slate-700 shadow-sm cursor-pointer'
                   } clay-card`}
                 >
                   {!isEditing && (
                     <div className={`mt-0.5 h-4.5 w-4.5 rounded-lg border flex items-center justify-center flex-shrink-0 transition-all ${
-                      active ? 'bg-indigo-600 border-indigo-600 text-white shadow-sm' : 'bg-slate-100 border-slate-300'
+                      active ? 'bg-indigo-600 border-indigo-600 text-white shadow-sm' : 'bg-slate-100 dark:bg-slate-800 border-slate-300 dark:border-slate-700'
                     }`} style={{ boxShadow: active ? 'inset 1px 1px 2px rgba(255,255,255,0.45)' : 'inset 1px 1px 2px rgba(0,0,0,0.05)' }}>
                       {active && <Check className="h-3.5 w-3.5" />}
                     </div>
@@ -438,42 +433,42 @@ const GeneratePaper = () => {
 
                   {isEditing ? (
                     <div className="flex-1 space-y-3" onClick={(e) => e.stopPropagation()}>
-                      <div className="flex items-center justify-between text-[9px] font-bold text-slate-400 uppercase tracking-wider">
+                      <div className="flex items-center justify-between text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">
                         <span>Editing Question {idx + 1} • {q.type}</span>
                         <div className="flex items-center gap-2">
-                          <label className="text-[10px] font-bold text-slate-500">Marks:</label>
+                          <label className="text-[10px] font-bold text-slate-500 dark:text-slate-400">Marks:</label>
                           <input
                             type="number"
                             value={editFormData.marks}
                             onChange={(e) => setEditFormData({ ...editFormData, marks: Number(e.target.value) })}
-                            className="w-16 px-2 py-1 bg-white border border-slate-200 rounded-lg text-xs font-bold outline-none focus:border-indigo-600"
+                            className="w-16 px-2 py-1 text-xs font-bold outline-none focus:border-indigo-600"
                             min="1"
                           />
                         </div>
                       </div>
 
                       <div className="space-y-1">
-                        <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-450">Question Text</label>
+                        <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-450 dark:text-slate-400">Question Text</label>
                         <textarea
                           value={editFormData.text}
                           onChange={(e) => setEditFormData({ ...editFormData, text: e.target.value })}
-                          className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-indigo-650 min-h-[60px]"
+                          className="w-full px-3 py-2 text-xs font-semibold outline-none focus:border-indigo-650 min-h-[60px]"
                           placeholder="Enter question text..."
                         />
                       </div>
 
                       {q.type === 'MCQ' && editFormData.options && (
                         <div className="space-y-1.5">
-                          <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-450">Options</label>
+                          <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-450 dark:text-slate-400">Options</label>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                             {editFormData.options.map((opt, oIdx) => (
                               <div key={oIdx} className="flex items-center gap-1.5">
-                                <span className="text-[10px] font-bold text-slate-450">{String.fromCharCode(65 + oIdx)}.</span>
+                                <span className="text-[10px] font-bold text-slate-450 dark:text-slate-400">{String.fromCharCode(65 + oIdx)}.</span>
                                 <input
                                   type="text"
                                   value={opt}
                                   onChange={(e) => handleOptionChange(oIdx, e.target.value)}
-                                  className="flex-1 px-3 py-1 bg-white border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-indigo-650"
+                                  className="flex-1 px-3 py-1 text-xs font-semibold outline-none focus:border-indigo-650"
                                   placeholder={`Option ${oIdx + 1}`}
                                 />
                               </div>
@@ -483,20 +478,20 @@ const GeneratePaper = () => {
                       )}
 
                       <div className="space-y-1">
-                        <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-450">Answer / Marking Scheme</label>
+                        <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-450 dark:text-slate-400">Answer / Marking Scheme</label>
                         <textarea
                           value={editFormData.answer}
                           onChange={(e) => setEditFormData({ ...editFormData, answer: e.target.value })}
-                          className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-indigo-650 min-h-[50px]"
+                          className="w-full px-3 py-2 text-xs font-semibold outline-none focus:border-indigo-650 min-h-[50px]"
                           placeholder="Enter answer..."
                         />
                       </div>
 
-                      <div className="flex justify-end gap-2 pt-2 border-t border-slate-100">
+                      <div className="flex justify-end gap-2 pt-2 border-t border-slate-100 dark:border-slate-800">
                         <button
                           type="button"
                           onClick={handleCancelEdit}
-                          className="px-3 py-1.5 text-slate-700 font-bold rounded-xl text-[10px] clay-btn clay-btn-flat"
+                          className="px-3 py-1.5 text-slate-700 dark:text-slate-300 font-bold rounded-xl text-[10px] clay-btn clay-btn-flat"
                         >
                           Cancel
                         </button>
@@ -511,14 +506,14 @@ const GeneratePaper = () => {
                     </div>
                   ) : (
                     <div className="flex-1 space-y-2">
-                      <div className="flex items-center justify-between text-[9px] font-bold text-slate-450 uppercase tracking-wider">
+                      <div className="flex items-center justify-between text-[9px] font-bold text-slate-455 dark:text-slate-500 uppercase tracking-wider">
                         <span>Question {idx + 1} • {q.type}</span>
                         <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
-                          <span className="bg-white/85 border border-slate-250 px-2.5 py-0.5 rounded-lg text-slate-650 font-bold clay-badge">{q.marks} Marks</span>
+                          <span className="bg-white/85 dark:bg-slate-800 border border-slate-250 dark:border-slate-700 px-2.5 py-0.5 rounded-lg text-slate-650 dark:text-slate-350 font-bold clay-badge">{q.marks} Marks</span>
                           <button
                             type="button"
                             onClick={() => handleStartEdit(q)}
-                            className="p-1 text-slate-450 hover:text-indigo-600 transition-colors"
+                            className="p-1 text-slate-450 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
                             title="Edit Question"
                           >
                             <Edit2 className="h-3.5 w-3.5" />
@@ -533,21 +528,21 @@ const GeneratePaper = () => {
                           </button>
                         </div>
                       </div>
-                      <p className="text-xs font-semibold text-slate-900 leading-relaxed">{q.text}</p>
+                      <p className="text-xs font-bold text-slate-900 dark:text-white leading-relaxed">{q.text}</p>
                       
                       {q.type === 'MCQ' && q.options && q.options.length > 0 && (
-                         <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-2">
-                           {q.options.map((opt, oIdx) => (
-                             <div key={oIdx} className="bg-slate-100/50 border border-slate-200/50 p-2 text-[10px] rounded-lg text-slate-500 font-semibold truncate shadow-inner">
-                               {opt}
-                             </div>
-                           ))}
-                         </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-2">
+                          {q.options.map((opt, oIdx) => (
+                            <div key={oIdx} className="bg-slate-100/50 dark:bg-slate-950/40 border border-slate-200/50 dark:border-slate-800/40 p-2 text-[10px] rounded-lg text-slate-500 dark:text-slate-400 font-semibold truncate shadow-inner">
+                              {opt}
+                            </div>
+                          ))}
+                        </div>
                       )}
 
                       {q.answer && (
-                        <div className="bg-white/80 border border-indigo-100 text-indigo-750 p-3 rounded-2xl text-[10px] font-semibold leading-relaxed mt-3 shadow-inner">
-                          <span className="font-extrabold uppercase tracking-wider block text-indigo-500 text-[8px] mb-1">Answer / Scheme:</span>
+                        <div className="bg-white/80 dark:bg-slate-900/80 border border-indigo-100 dark:border-indigo-900/40 text-indigo-750 dark:text-indigo-300 p-3 rounded-2xl text-[10px] font-semibold leading-relaxed mt-3 shadow-inner">
+                          <span className="font-extrabold uppercase tracking-wider block text-indigo-500 dark:text-indigo-400 text-[8px] mb-1">Answer / Scheme:</span>
                           {q.answer}
                         </div>
                       )}
@@ -560,51 +555,51 @@ const GeneratePaper = () => {
 
           {/* Right layout metadata */}
           <div className="space-y-6">
-            <div className="premium-card p-6 space-y-5 sticky top-20 gpu-accelerated">
-              <h3 className="font-extrabold text-slate-900 text-sm flex items-center gap-2 pb-3.5 border-b border-slate-100">
-                <School className="h-4.5 w-4.5 text-indigo-650" />
+            <div className="premium-card p-6 space-y-5 bg-white/60 dark:bg-slate-900/60 sticky top-20 gpu-accelerated">
+              <h3 className="font-extrabold text-slate-900 dark:text-white text-sm flex items-center gap-2 pb-3.5 border-b border-slate-100 dark:border-slate-800/40">
+                <School className="h-4.5 w-4.5 text-indigo-500 dark:text-indigo-450" />
                 Exam details
               </h3>
 
               <div>
-                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-450 mb-1.5">Exam Sheet Title</label>
+                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-450 dark:text-slate-400 mb-1.5 ml-1">Exam Sheet Title</label>
                 <input
                   type="text"
                   name="title"
                   value={paperDetails.title}
                   onChange={handleDetailsChange}
                   placeholder="e.g. Unit Test 1"
-                  className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-indigo-600"
+                  className="w-full px-3 py-2 text-xs font-semibold outline-none focus:border-indigo-600"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-450 mb-1.5">School Name</label>
+                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-450 dark:text-slate-400 mb-1.5 ml-1">School Name</label>
                 <input
                   type="text"
                   name="schoolName"
                   value={paperDetails.schoolName}
                   onChange={handleDetailsChange}
                   placeholder="e.g. Cambridge School"
-                  className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-indigo-600"
+                  className="w-full px-3 py-2 text-xs font-semibold outline-none focus:border-indigo-600"
                 />
               </div>
 
               <div>
-                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-450 mb-1.5">Exam Name Header</label>
+                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-450 dark:text-slate-400 mb-1.5 ml-1">Exam Name Header</label>
                 <input
                   type="text"
                   name="examName"
                   value={paperDetails.examName}
                   onChange={handleDetailsChange}
                   placeholder="e.g. Science Term 1"
-                  className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-indigo-600"
+                  className="w-full px-3 py-2 text-xs font-semibold outline-none focus:border-indigo-600"
                 />
               </div>
 
               <div>
-                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-450 mb-1.5">Duration (Mins)</label>
+                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-450 dark:text-slate-400 mb-1.5 ml-1">Duration (Mins)</label>
                 <div className="relative">
                   <Clock className="absolute left-3 top-2.5 h-3.5 w-3.5 text-slate-400" />
                   <input
@@ -612,18 +607,18 @@ const GeneratePaper = () => {
                     name="duration"
                     value={paperDetails.duration}
                     onChange={handleDetailsChange}
-                    className="w-full pl-9 pr-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-indigo-600"
+                    className="w-full pl-9 pr-3 py-2 text-xs font-semibold outline-none focus:border-indigo-600"
                   />
                 </div>
               </div>
 
               {/* Instructions list */}
               <div className="space-y-2">
-                <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex justify-between items-center">
+                <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 flex justify-between items-center ml-1">
                   Instructions
                   <button
                     onClick={addInstruction}
-                    className="text-indigo-650 hover:text-indigo-800 p-1 flex items-center gap-0.5 text-[9px] font-bold"
+                    className="text-indigo-500 dark:text-indigo-400 hover:text-indigo-700 p-1 flex items-center gap-0.5 text-[9px] font-bold"
                   >
                     <Plus className="h-3 w-3" /> Add
                   </button>
@@ -637,11 +632,11 @@ const GeneratePaper = () => {
                         value={inst}
                         onChange={(e) => handleInstructionChange(index, e.target.value)}
                         placeholder={`Instruction ${index + 1}`}
-                        className="flex-1 px-3 py-1.5 bg-white border border-slate-200 rounded-xl text-[10px] font-semibold outline-none focus:border-indigo-600"
+                        className="flex-1 px-3 py-1.5 text-[10px] font-semibold outline-none focus:border-indigo-600"
                       />
                       <button
                         onClick={() => removeInstruction(index)}
-                        className="p-1.5 text-red-500 hover:bg-red-50 rounded-xl"
+                        className="p-1.5 text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 rounded-xl"
                       >
                         <Trash2 className="h-3.5 w-3.5" />
                       </button>
@@ -649,7 +644,7 @@ const GeneratePaper = () => {
                   ))}
                 </div>
               </div>
-              <div className="pt-2.5 border-t border-slate-100 flex flex-col gap-3.5">
+              <div className="pt-2.5 border-t border-slate-100 dark:border-slate-800 flex flex-col gap-3.5">
                 <button
                   onClick={handleAssemblePaper}
                   disabled={loading}
@@ -667,7 +662,7 @@ const GeneratePaper = () => {
                 
                 <button
                   onClick={() => setStep(1)}
-                  className="w-full py-2.5 text-slate-700 font-bold rounded-xl text-[10px] clay-btn clay-btn-flat"
+                  className="w-full py-2.5 text-slate-700 dark:text-slate-350 font-bold rounded-xl text-[10px] clay-btn clay-btn-flat"
                 >
                   Edit parameters
                 </button>

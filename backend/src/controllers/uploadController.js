@@ -1,5 +1,9 @@
 const { extractTextFromFile } = require('../services/ocrService');
-const { generateSimilarQuestions } = require('../services/geminiService');
+const { 
+  generateSimilarQuestions,
+  extractQuestionsFromOcr,
+  generateSimilarAndScannedQuestions
+} = require('../services/geminiService');
 const Upload = require('../models/Upload');
 const Question = require('../models/Question');
 const History = require('../models/History');
@@ -36,7 +40,7 @@ const uploadAndOCR = async (req, res, next) => {
     return next(new Error('Image file size exceeds the 5 MB limit.'));
   }
 
-  const { language = 'eng' } = req.body;
+  const { language = 'eng', scanMode = 'ai_enhanced' } = req.body;
   
   // Create pending upload record
   const uploadRecord = await Upload.create({
@@ -68,14 +72,22 @@ const uploadAndOCR = async (req, res, next) => {
     uploadRecord.filePath = cloudinaryResult.secure_url;
     await uploadRecord.save();
 
-    console.log(`OCR & Cloudinary upload complete. Triggering Gemini analysis to generate similar questions...`);
+    console.log(`OCR & Cloudinary upload complete. Triggering Gemini analysis for mode: ${scanMode}...`);
 
-    // 3. Generate similar questions
+    // 3. Generate questions based on mode
     const aiLanguage = language.includes('hin') ? 'Hindi' : 'English';
-    const similarQuestions = await generateSimilarQuestions(extractedText, aiLanguage);
+    let questionsList = [];
+
+    if (scanMode === 'ocr_only') {
+      console.log('Mode: OCR Only (As-It-Is)...');
+      questionsList = await extractQuestionsFromOcr(extractedText, aiLanguage);
+    } else {
+      console.log('Mode: AI Enhanced (Scan + Generate)...');
+      questionsList = await generateSimilarAndScannedQuestions(extractedText, aiLanguage);
+    }
 
     // 3. Save questions to general Questions pool
-    const questionsToSave = similarQuestions.map((q) => ({
+    const questionsToSave = questionsList.map((q) => ({
       text: q.text,
       options: q.options || [],
       answer: q.answer || 'Answer not specified',
@@ -87,6 +99,7 @@ const uploadAndOCR = async (req, res, next) => {
       class: 'Any',
       chapter: 'Scanned Source',
       createdBy: req.user._id,
+      source: q.source || (scanMode === 'ocr_only' ? 'scanned' : 'generated'),
     }));
 
     const savedQuestions = await Question.insertMany(questionsToSave);

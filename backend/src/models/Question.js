@@ -59,6 +59,11 @@ const questionSchema = new mongoose.Schema(
       ref: 'User',
       required: true,
     },
+    source: {
+      type: String,
+      enum: ['scanned', 'generated', 'manual'],
+      default: 'manual',
+    },
     isSavedInBank: {
       type: Boolean,
       default: false,
