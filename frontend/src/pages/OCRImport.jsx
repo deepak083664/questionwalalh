@@ -25,11 +25,45 @@ const OCRImport = () => {
   const [showRawText, setShowRawText] = useState(false);
   const [savedQuestionIds, setSavedQuestionIds] = useState([]);
 
+  const validateFile = (selectedFile) => {
+    if (!selectedFile) return false;
+    const ext = selectedFile.name.substring(selectedFile.name.lastIndexOf('.')).toLowerCase();
+    const allowedImageExts = ['.jpg', '.jpeg', '.png'];
+    const isPDF = ext === '.pdf';
+    const isImage = allowedImageExts.includes(ext);
+
+    if (!isPDF && !isImage) {
+      setError('Only JPG, PNG, and PDF files are allowed.');
+      return false;
+    }
+
+    if (isPDF) {
+      const maxPdfSize = 10 * 1024 * 1024; // 10MB
+      if (selectedFile.size > maxPdfSize) {
+        setError('PDF file size exceeds the 10 MB limit.');
+        return false;
+      }
+    } else if (isImage) {
+      const maxImgSize = 5 * 1024 * 1024; // 5MB
+      if (selectedFile.size > maxImgSize) {
+        setError('Image file size exceeds the 5 MB limit.');
+        return false;
+      }
+    }
+
+    return true;
+  };
+
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
     if (selectedFile) {
-      setFile(selectedFile);
-      setError('');
+      if (validateFile(selectedFile)) {
+        setFile(selectedFile);
+        setError('');
+      } else {
+        setFile(null);
+        e.target.value = null;
+      }
     }
   };
 
@@ -41,13 +75,11 @@ const OCRImport = () => {
     e.preventDefault();
     const droppedFile = e.dataTransfer.files[0];
     if (droppedFile) {
-      const allowed = ['.jpg', '.jpeg', '.png', '.pdf'];
-      const ext = droppedFile.name.substring(droppedFile.name.lastIndexOf('.')).toLowerCase();
-      if (allowed.includes(ext)) {
+      if (validateFile(droppedFile)) {
         setFile(droppedFile);
         setError('');
       } else {
-        setError('Only JPG, PNG, and PDF files are allowed.');
+        setFile(null);
       }
     }
   };
@@ -153,7 +185,7 @@ const OCRImport = () => {
                   {file ? file.name : 'Select or drag book pages/worksheets'}
                 </h3>
                 <p className="text-[10px] text-slate-400 mt-1 font-semibold">
-                  {file ? `${(file.size / (1024 * 1024)).toFixed(2)} MB` : 'Supports JPG, PNG, PDF files (Max 10MB)'}
+                  {file ? `${(file.size / (1024 * 1024)).toFixed(2)} MB` : 'Supports Image (Max 5MB), PDF (Max 10MB)'}
                 </p>
               </label>
             </div>

@@ -17,10 +17,27 @@ const uploadAndOCR = async (req, res, next) => {
     return next(new Error('Please upload an image (JPG/PNG) or a PDF file'));
   }
 
-  const { language = 'eng' } = req.body;
   const filePath = req.file.path;
   const mimeType = req.file.mimetype;
+  const fileSize = req.file.size;
 
+  const isPDF = mimeType === 'application/pdf';
+  const isImage = mimeType.startsWith('image/');
+
+  if (isPDF && fileSize > 10 * 1024 * 1024) {
+    if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+    res.status(400);
+    return next(new Error('PDF file size exceeds the 10 MB limit.'));
+  }
+
+  if (isImage && fileSize > 5 * 1024 * 1024) {
+    if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+    res.status(400);
+    return next(new Error('Image file size exceeds the 5 MB limit.'));
+  }
+
+  const { language = 'eng' } = req.body;
+  
   // Create pending upload record
   const uploadRecord = await Upload.create({
     user: req.user._id,
