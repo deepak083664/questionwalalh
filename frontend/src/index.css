@@ -36,6 +36,9 @@
   transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease, border-color 0.3s ease;
   position: relative;
   overflow: hidden;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
 }
 
 .premium-card::before, .clay-card::before {
@@ -270,6 +273,7 @@ textarea:focus {
   background-image: 
     linear-gradient(to right, rgba(99, 102, 241, 0.04) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(99, 102, 241, 0.04) 1px, transparent 1px);
+  background-attachment: fixed; /* Hardware compositing layer helper to eliminate scroll paint lag */
 }
 
 /* GPU acceleration for sticky/floating containers to optimize scroll performance */
