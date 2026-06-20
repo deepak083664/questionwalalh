@@ -272,7 +272,7 @@ const generateQuestions = async ({
   }
 
   try {
-    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
     
     const prompt = `You are an expert exam paper setter. Generate exactly ${count} educational questions for a school exam paper.
     
@@ -352,7 +352,7 @@ const generateSimilarQuestions = async (extractedText, language = 'English') => 
   }
 
   try {
-    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
     const prompt = `You are an AI assistant helping a teacher. We scanned a question sheet using OCR and extracted the following text:
     
     ---
