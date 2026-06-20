@@ -1,20 +1,26 @@
-import React, { createContext, useContext, useEffect } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 
 const ThemeContext = createContext();
 
 export const ThemeProvider = ({ children }) => {
-  const theme = 'light';
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem('theme') || 'light';
+  });
 
   useEffect(() => {
     const root = window.document.documentElement;
-    root.classList.remove('dark');
-    root.style.colorScheme = 'light';
-    localStorage.setItem('theme', 'light');
-  }, []);
+    if (theme === 'dark') {
+      root.classList.add('dark');
+      root.style.colorScheme = 'dark';
+    } else {
+      root.classList.remove('dark');
+      root.style.colorScheme = 'light';
+    }
+    localStorage.setItem('theme', theme);
+  }, [theme]);
 
   const toggleTheme = () => {
-    // Disabled for Light Mode only layout
-    console.log('Question Wallah is currently configured for light mode only.');
+    setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
   };
 
   return (

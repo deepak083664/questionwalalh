@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import {
   GraduationCap,
   BrainCircuit,
@@ -12,11 +13,14 @@ import {
   ArrowRight,
   Shield,
   Zap,
-  Globe
+  Globe,
+  Sun,
+  Moon
 } from 'lucide-react';
 
 const Landing = () => {
   const { isAuthenticated } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
 
   const features = [
@@ -75,6 +79,19 @@ const Landing = () => {
           </nav>
 
           <div className="flex items-center gap-1.5 sm:gap-3">
+            {/* Theme Toggle Button */}
+            <button
+              onClick={toggleTheme}
+              className="h-9 w-9 bg-slate-50 border border-slate-200 text-slate-500 hover:text-slate-800 rounded-xl flex items-center justify-center transition-all shadow-sm clay-badge"
+              title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+            >
+              {theme === 'dark' ? (
+                <Sun className="h-4.5 w-4.5 text-amber-500 animate-pulse" />
+              ) : (
+                <Moon className="h-4.5 w-4.5 text-slate-650" />
+              )}
+            </button>
+
             {isAuthenticated ? (
               <button
                 onClick={() => navigate('/dashboard')}

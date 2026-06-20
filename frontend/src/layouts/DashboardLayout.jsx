@@ -143,6 +143,19 @@ const DashboardLayout = ({ children }) => {
           </div>
 
           <div className="flex items-center gap-3">
+            {/* Theme Toggle Button */}
+            <button
+              onClick={toggleTheme}
+              className="h-9 w-9 bg-slate-50 border border-slate-200 text-slate-500 hover:text-slate-800 rounded-xl flex items-center justify-center transition-all shadow-sm clay-badge"
+              title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+            >
+              {theme === 'dark' ? (
+                <Sun className="h-4.5 w-4.5 text-amber-500 animate-pulse" />
+              ) : (
+                <Moon className="h-4.5 w-4.5 text-slate-650" />
+              )}
+            </button>
+
             {/* Action Item details */}
             <span className="text-[9px] font-bold uppercase tracking-wider text-indigo-650 bg-indigo-50 border border-indigo-150 px-2.5 py-1 rounded-lg clay-badge">
               Teacher Mode
