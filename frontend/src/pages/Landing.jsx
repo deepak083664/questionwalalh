@@ -23,6 +23,11 @@ const Landing = () => {
   const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
 
+  // Terms, Policy & About Modal States
+  const [isTermsOpen, setIsTermsOpen] = React.useState(false);
+  const [isPolicyOpen, setIsPolicyOpen] = React.useState(false);
+  const [isAboutOpen, setIsAboutOpen] = React.useState(false);
+
   const features = [
     {
       icon: BrainCircuit,
@@ -113,10 +118,10 @@ const Landing = () => {
       </header>
 
       {/* Hero Section */}
-      <section className="relative pt-32 pb-8 sm:pb-12 overflow-hidden border-b border-slate-800 bg-grid-pattern min-h-[500px] flex items-end justify-center">
+      <section className="relative pt-24 sm:pt-32 pb-8 sm:pb-12 overflow-hidden border-b border-slate-800 bg-grid-pattern min-h-[400px] sm:min-h-[500px] flex items-end justify-center">
         {/* Full-width Banner Image Background */}
         <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-[0.97] transition-all duration-300 scale-102"
+          className="absolute inset-0 bg-cover bg-[position:center_bottom] sm:bg-center bg-no-repeat opacity-[0.97] transition-all duration-300 scale-102"
           style={{ 
             backgroundImage: "url('/banner.jpg')",
           }}
@@ -129,6 +134,13 @@ const Landing = () => {
         <div className="absolute bottom-12 right-12 h-32 w-32 bg-cyan-400/20 dark:bg-cyan-500/10 rounded-full blur-xl clay-floating [animation-delay:2.5s] -z-10"></div>
         <div className="absolute top-1/4 left-1/4 w-80 h-80 rounded-full bg-indigo-400/15 dark:bg-indigo-500/5 aurora-blur animate-pulse -z-20"></div>
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full bg-cyan-400/15 dark:bg-cyan-500/5 aurora-blur animate-pulse [animation-delay:3s] -z-20"></div>
+
+        {/* Educational Quote in Glass Box */}
+        <div className="absolute top-4 sm:top-6 left-1/2 -translate-x-1/2 z-20 px-4 py-2 rounded-2xl bg-slate-950/40 border border-white/5 backdrop-blur-sm shadow-inner w-[calc(100%-3rem)] max-w-md sm:max-w-lg">
+          <p className="text-[10px] sm:text-[11px] italic text-indigo-200 font-bold tracking-wide leading-relaxed">
+            "Empowering Educators: Create syllabus-aligned bilingual tests, scan worksheets with OCR, and export print-ready PDFs in seconds."
+          </p>
+        </div>
 
         {/* Hero Content aligned at the bottom over the Banner */}
         <div className="relative z-10 space-y-4 max-w-2xl mx-auto px-6 text-center flex flex-col items-center clay-animate-fade w-full">
@@ -269,16 +281,131 @@ const Landing = () => {
             </span>
           </div>
           
-          <p className="text-slate-400 text-center md:text-left font-medium">
-            © {new Date().getFullYear()} Question Wallah SaaS. Designed for modern global classrooms. All rights reserved.
-          </p>
+          <div className="text-center md:text-left space-y-2 text-slate-400">
+            <p className="font-semibold text-xs">
+              © {new Date().getFullYear()} Question Wallah. All rights reserved.
+            </p>
+            <p className="text-[11px] text-slate-500 font-semibold flex items-center justify-center md:justify-start gap-1">
+              <span>Designed & Developed by</span>
+              <a 
+                href="https://deepakintro.netlify.app" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="text-sm font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-orange-400 to-yellow-400 hover:underline transition-all duration-300 hover:scale-105 transform inline-block"
+              >
+                Deepak
+              </a>
+            </p>
+          </div>
           
           <div className="flex gap-6 text-slate-400 font-bold">
-            <span className="hover:text-indigo-450 transition-all cursor-pointer hover:underline hover:-translate-y-0.5 transform">Terms</span>
-            <span className="hover:text-indigo-450 transition-all cursor-pointer hover:underline hover:-translate-y-0.5 transform">Privacy Policy</span>
+            <span 
+              onClick={() => setIsAboutOpen(true)}
+              className="hover:text-indigo-450 transition-all cursor-pointer hover:underline hover:-translate-y-0.5 transform"
+            >
+              About
+            </span>
+            <span 
+              onClick={() => setIsTermsOpen(true)}
+              className="hover:text-indigo-450 transition-all cursor-pointer hover:underline hover:-translate-y-0.5 transform"
+            >
+              Terms
+            </span>
+            <span 
+              onClick={() => setIsPolicyOpen(true)}
+              className="hover:text-indigo-450 transition-all cursor-pointer hover:underline hover:-translate-y-0.5 transform"
+            >
+              Privacy Policy
+            </span>
           </div>
         </div>
       </footer>
+
+      {/* Terms Modal */}
+      {isTermsOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm transition-all duration-300">
+          <div className="clay-card max-w-lg w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 space-y-4 shadow-2xl relative clay-animate-fade">
+            <h3 className="text-lg font-extrabold text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-800 pb-2">
+              Terms of Service (नियम और शर्तें)
+            </h3>
+            <div className="text-xs text-slate-650 dark:text-slate-350 space-y-3 font-semibold leading-relaxed overflow-y-auto max-h-[300px] pr-2">
+              <p>Welcome to Question Wallah. By using our platform, you agree to these terms:</p>
+              <div className="space-y-2.5">
+                <p><strong>1. Use License:</strong> The question papers generated are for educational use by teachers, schools, or students. You may download, print, and distribute them.</p>
+                <p><strong>2. Fair AI Usage:</strong> Do not abuse the AI generation features to produce spam, malicious content, or copyrighted materials.</p>
+                <p><strong>3. Content Policy:</strong> The user retains rights to their own questions, but Question Wallah is not responsible for the accuracy of AI-generated answers.</p>
+                <p><strong>4. Service Updates:</strong> We reserve the right to limit, modify, or suspend features of the platform at our discretion.</p>
+              </div>
+            </div>
+            <div className="flex justify-end pt-2">
+              <button 
+                onClick={() => setIsTermsOpen(false)}
+                className="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white text-xs font-bold rounded-xl transition-all shadow-md active:scale-95"
+              >
+                I Accept
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Privacy Policy Modal */}
+      {isPolicyOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm transition-all duration-300">
+          <div className="clay-card max-w-lg w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 space-y-4 shadow-2xl relative clay-animate-fade">
+            <h3 className="text-lg font-extrabold text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-800 pb-2">
+              Privacy Policy (गोपनीयता नीति)
+            </h3>
+            <div className="text-xs text-slate-650 dark:text-slate-350 space-y-3 font-semibold leading-relaxed overflow-y-auto max-h-[300px] pr-2">
+              <p>Your privacy is important to us. Here is how we manage your information:</p>
+              <div className="space-y-2.5">
+                <p><strong>1. Information Collection:</strong> We collect your name, email address, and school details upon registration to customize your exam PDF headers.</p>
+                <p><strong>2. OCR & File Privacy:</strong> Any files (Images/PDFs) uploaded for OCR scanning are processed securely and deleted immediately after text extraction.</p>
+                <p><strong>3. Data Security:</strong> We do not share your personal data or generated question papers with any third-party marketing companies.</p>
+                <p><strong>4. Account Deletion:</strong> You can completely delete your profile, history, and papers from your dashboard at any time.</p>
+              </div>
+            </div>
+            <div className="flex justify-end pt-2">
+              <button 
+                onClick={() => setIsPolicyOpen(false)}
+                className="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white text-xs font-bold rounded-xl transition-all shadow-md active:scale-95"
+              >
+                Understood
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* About Modal */}
+      {isAboutOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm transition-all duration-300">
+          <div className="clay-card max-w-lg w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 space-y-4 shadow-2xl relative clay-animate-fade">
+            <h3 className="text-lg font-extrabold text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-800 pb-2">
+              About Question Wallah (हमारे बारे में)
+            </h3>
+            <div className="text-xs text-slate-650 dark:text-slate-350 space-y-3 font-semibold leading-relaxed overflow-y-auto max-h-[300px] pr-2">
+              <p>
+                <strong>Question Wallah</strong> is an AI-powered SaaS platform designed specifically for teachers, educators, and schools to streamline test paper creation.
+              </p>
+              <div className="space-y-2.5">
+                <p>💡 <strong>Our Mission:</strong> Automate the tedious process of assessment drafting, saving educators hours of layout formatting and question writing.</p>
+                <p>🌐 <strong>Bilingual by Design:</strong> Native support for English and Hindi (Devanagari) scripts, enabling perfect formatting for local and global curriculums.</p>
+                <p>⚙️ <strong>OCR Scanning:</strong> Instantly digitize legacy worksheets, books, or notes using server-side optical character recognition.</p>
+                <p>👨‍💻 <strong>Designed & Developed by:</strong> Deepak. Visit my portfolio at <a href="https://deepakintro.netlify.app" target="_blank" rel="noopener noreferrer" className="text-indigo-500 dark:text-indigo-400 hover:underline">deepakintro.netlify.app</a>.</p>
+              </div>
+            </div>
+            <div className="flex justify-end pt-2">
+              <button 
+                onClick={() => setIsAboutOpen(false)}
+                className="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white text-xs font-bold rounded-xl transition-all shadow-md active:scale-95"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

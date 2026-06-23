@@ -8,37 +8,54 @@ const fontDir = path.join(__dirname, '../../assets/fonts');
 if (!fs.existsSync(fontDir)) {
   fs.mkdirSync(fontDir, { recursive: true });
 }
-const hindiFontPath = path.join(fontDir, 'NotoSansDevanagari.ttf');
+const regularFontPath = path.join(fontDir, 'Poppins-Regular.ttf');
+const boldFontPath = path.join(fontDir, 'Poppins-Bold.ttf');
 
-// Function to download Hindi Unicode font if not present
-const ensureHindiFont = () => {
+// Function to download Poppins fonts if not present
+const ensureFonts = () => {
   return new Promise((resolve) => {
-    if (fs.existsSync(hindiFontPath)) {
-      return resolve(hindiFontPath);
+    const regularExists = fs.existsSync(regularFontPath);
+    const boldExists = fs.existsSync(boldFontPath);
+
+    if (regularExists && boldExists) {
+      return resolve({ regular: regularFontPath, bold: boldFontPath });
     }
 
-    // First try standard Windows fonts
-    const windowsFontPath = 'C:\\Windows\\Fonts\\mangal.ttf';
-    if (fs.existsSync(windowsFontPath)) {
-      console.log('Using Windows Mangal Devanagari font.');
-      return resolve(windowsFontPath);
-    }
+    console.log('Downloading Poppins fonts from Google Fonts...');
+    const regUrl = 'https://raw.githubusercontent.com/google/fonts/main/ofl/poppins/Poppins-Regular.ttf';
+    const boldUrl = 'https://raw.githubusercontent.com/google/fonts/main/ofl/poppins/Poppins-Bold.ttf';
 
-    console.log('Downloading Noto Sans Devanagari font from Google Fonts...');
-    const fontUrl = 'https://raw.githubusercontent.com/googlefonts/noto-fonts/main/hinted/ttf/NotoSansDevanagari/NotoSansDevanagari-Regular.ttf';
-    
-    const file = fs.createWriteStream(hindiFontPath);
-    https.get(fontUrl, (response) => {
-      response.pipe(file);
-      file.on('finish', () => {
-        file.close();
-        console.log('Devanagari font downloaded successfully.');
-        resolve(hindiFontPath);
+    const download = (url, dest) => {
+      return new Promise((res) => {
+        const file = fs.createWriteStream(dest);
+        https.get(url, (response) => {
+          if (response.statusCode === 200) {
+            response.pipe(file);
+            file.on('finish', () => {
+              file.close();
+              res(dest);
+            });
+          } else {
+            file.close();
+            fs.unlink(dest, () => {});
+            res(null);
+          }
+        }).on('error', () => {
+          file.close();
+          fs.unlink(dest, () => {});
+          res(null);
+        });
       });
-    }).on('error', (err) => {
-      console.error('Failed to download font:', err.message);
-      fs.unlink(hindiFontPath, () => {});
-      resolve(null); // Fallback to standard fonts (which might not render Devanagari properly, but avoids crash)
+    };
+
+    Promise.all([
+      download(regUrl, regularFontPath),
+      download(boldUrl, boldFontPath)
+    ]).then(([regPath, bldPath]) => {
+      resolve({
+        regular: regPath || 'Helvetica',
+        bold: bldPath || 'Helvetica-Bold'
+      });
     });
   });
 };
@@ -49,7 +66,7 @@ const ensureHindiFont = () => {
  * @returns {Promise<Buffer>} - Resolves with PDF file buffer
  */
 const generatePaperPDF = async (paperData) => {
-  const customFont = await ensureHindiFont();
+  const fonts = await ensureFonts();
 
   return new Promise((resolve, reject) => {
     try {
@@ -68,8 +85,8 @@ const generatePaperPDF = async (paperData) => {
         /[\u0900-\u097F]/.test(q.text)
       );
 
-      const regularFont = hasHindi && customFont ? customFont : 'Helvetica';
-      const boldFont = hasHindi && customFont ? customFont : 'Helvetica-Bold';
+      const regularFont = hasHindi ? fonts.regular : 'Helvetica';
+      const boldFont = hasHindi ? fonts.bold : 'Helvetica-Bold';
 
       // ----------------------------------------------------
       // HEADER SECTION (School & Exam Details)
@@ -129,44 +146,92 @@ const generatePaperPDF = async (paperData) => {
       const renderSection = (title, items) => {
         if (items.length === 0) return;
 
+        // Check page overflow for section title
+        if (doc.y > 730) doc.addPage();
+
         doc.font(boldFont).fontSize(12).text(title, 50);
         doc.moveDown(0.4);
 
         items.forEach((q) => {
-          // Check page overflow (leave some padding)
-          if (doc.y > 750) doc.addPage();
-
-          const currentY = doc.y;
+          let currentY = doc.y;
           doc.font(regularFont).fontSize(10.5);
 
           // Render Question text and marks alignment
           const marksText = `[${q.marks} Mark${q.marks > 1 ? 's' : ''}]`;
           
-          doc.text(`${qIndex}. ${q.text}`, 50, currentY, { width: 430 });
+          // Calculate heights to check for page overflow beforehand
+          doc.font(regularFont).fontSize(10.5);
+          const questionHeight = doc.heightOfString(`${qIndex}. ${q.text}`, { width: 430 });
+          doc.font(boldFont).fontSize(10.5);
+          const marksHeight = doc.heightOfString(marksText, { width: 60 });
+          const qHeight = Math.max(questionHeight, marksHeight);
+
+          // Check page overflow (leave some padding)
+          if (currentY + qHeight > 750) {
+            doc.addPage();
+            currentY = doc.y;
+          }
+
+          // Render at calculated currentY
+          doc.font(regularFont).fontSize(10.5).text(`${qIndex}. ${q.text}`, 50, currentY, { width: 430 });
+          doc.font(boldFont).fontSize(10.5).text(marksText, 485, currentY, { align: 'right', width: 60 });
           
-          // Place marks text on the right
-          doc.font(boldFont).text(marksText, 485, currentY, { align: 'right', width: 60 });
+          // Move doc.y to the bottom of the question text/marks
+          doc.y = currentY + qHeight;
           doc.moveDown(0.3);
 
           // Render MCQ options if applicable
           if (q.type === 'MCQ' && q.options && q.options.length > 0) {
-            doc.font(regularFont).fontSize(10);
-            
-            // Format options: if text fits, render 2 columns side-by-side
             const op1 = q.options[0];
             const op2 = q.options[1];
             const op3 = q.options[2];
             const op4 = q.options[3];
 
             if (op1 && op2 && op3 && op4) {
+              doc.font(regularFont).fontSize(10);
+              const h1 = doc.heightOfString(op1, { width: 220 });
+              const h2 = doc.heightOfString(op2, { width: 220 });
+              const row1Height = Math.max(h1, h2);
+
+              if (doc.y + row1Height > 750) {
+                doc.addPage();
+              }
+
               const startY = doc.y;
               doc.text(op1, 70, startY, { width: 220 });
               doc.text(op2, 300, startY, { width: 220 });
+              
+              doc.y = startY + row1Height;
               doc.moveDown(0.2);
+
+              const h3 = doc.heightOfString(op3, { width: 220 });
+              const h4 = doc.heightOfString(op4, { width: 220 });
+              const row2Height = Math.max(h3, h4);
+
+              if (doc.y + row2Height > 750) {
+                doc.addPage();
+              }
+
               const secondY = doc.y;
               doc.text(op3, 70, secondY, { width: 220 });
               doc.text(op4, 300, secondY, { width: 220 });
+              
+              doc.y = secondY + row2Height;
               doc.moveDown(0.5);
+            } else {
+              // Fallback to vertical layout if options are not exactly 4
+              doc.font(regularFont).fontSize(10);
+              q.options.forEach((opt) => {
+                const optHeight = doc.heightOfString(opt, { width: 450 });
+                if (doc.y + optHeight > 750) {
+                  doc.addPage();
+                }
+                const startY = doc.y;
+                doc.text(opt, 70, startY, { width: 450 });
+                doc.y = startY + optHeight;
+                doc.moveDown(0.2);
+              });
+              doc.moveDown(0.3);
             }
           } else {
             doc.moveDown(0.5);
